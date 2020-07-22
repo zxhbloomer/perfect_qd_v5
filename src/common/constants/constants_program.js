@@ -27,10 +27,6 @@ const D_GROUP_DIALOG = 'D00000100'
 const P_TENANT = 'P00000080'
 /** 系统参数 */
 const P_CONFIG = 'P00000060'
-/** 模块按钮 */
-const P_BUTTON = 'P00000041'
-/** 模块编辑 */
-const P_PAGE = 'P00000040'
 /** 字典数据 */
 const P_DICT_DATA = 'P00000050'
 /** 字典类型 */
@@ -83,10 +79,6 @@ export default {
   P_TENANT,
   /** 系统参数 */
   P_CONFIG,
-  /** 模块按钮 */
-  P_BUTTON,
-  /** 模块编辑 */
-  P_PAGE,
   /** 字典数据 */
   P_DICT_DATA,
   /** 字典类型 */

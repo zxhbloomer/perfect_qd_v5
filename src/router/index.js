@@ -159,30 +159,6 @@ export const asyncRoutes = [
           }
         ]
       },
-      {
-        path: 'module',
-        // component: subMenu,
-        redirect: 'noRedirect',
-        // name: 'M00000020', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
-        alwaysShow: true,
-        meta: {
-          title: '模块管理',
-          icon: '模块编辑',
-          noCache: true
-        },
-        children: [
-          { path: 'page',
-            component: () => import('@/views/10_system/module/module'),
-            name: 'P00000040',
-            meta: { title: '模块编辑' }
-          },
-          { path: 'button',
-            component: () => import('@/views/10_system/modulebutton/modulebutton'),
-            name: 'P00000041',
-            meta: { title: '模块按钮' }
-          }
-        ]
-      },
       { path: 'config',
         component: () => import('@/views/10_system/config/config'),
         name: 'P00000060',
@@ -329,30 +305,6 @@ export const asyncRoutes2 = [
             component: () => import('@/views/10_system/dictdata/dictdata'),
             name: 'P00000050',
             meta: { title: '字典数据' }
-          }
-        ]
-      },
-      {
-        path: 'module',
-        // component: subMenu,
-        redirect: 'noRedirect',
-        // name: 'M00000020', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
-        alwaysShow: true,
-        meta: {
-          title: '模块管理',
-          icon: '模块编辑',
-          noCache: true
-        },
-        children: [
-          { path: 'page',
-            component: () => import('@/views/10_system/module/module'),
-            name: 'P00000040',
-            meta: { title: '模块编辑' }
-          },
-          { path: 'button',
-            component: () => import('@/views/10_system/modulebutton/modulebutton'),
-            name: 'P00000041',
-            meta: { title: '模块按钮' }
           }
         ]
       },
