@@ -37,6 +37,18 @@
         </el-col>
       </el-row>
 
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="默认菜单：" prop="is_default">
+            <el-switch
+              v-model="dataJson.tempJson.is_default"
+              inactive-text="非默认菜单"
+              active-text="默认菜单"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-row v-show="settings.dialogStatus === PARAMETERS.STATUS_UPDATE || isViewModel">
         <el-col :span="12">
           <el-form-item label="更新人：" prop="u_name">
