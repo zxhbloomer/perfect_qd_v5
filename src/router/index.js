@@ -130,11 +130,6 @@ export const asyncRoutes = [
         name: 'P00000180',
         meta: { title: '系统编码', icon: 'syscode' }
       },
-      { path: 'vue',
-        component: () => import('@/views/10_system/vuesetting/vue'),
-        name: 'P00000190',
-        meta: { title: 'vue页面维护', icon: 'syscode' }
-      },
       { path: 'icons',
         component: () => import('@/views/10_system/icons/icon'),
         name: 'P00000230',
@@ -307,11 +302,6 @@ export const asyncRoutes2 = [
         component: () => import('@/views/00_platform/syscode/syscode'),
         name: 'P00000180',
         meta: { title: '系统编码', icon: 'syscode' }
-      },
-      { path: 'vue',
-        component: () => import('@/views/10_system/vuesetting/vue'),
-        name: 'P00000190',
-        meta: { title: 'vue页面维护', icon: 'syscode' }
       },
       { path: 'icons',
         component: () => import('@/views/10_system/icons/icon'),

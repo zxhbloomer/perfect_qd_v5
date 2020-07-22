@@ -42,9 +42,6 @@ const P_RESOURCE = 'P00000020'
 /** 角色 */
 const P_ROLE = 'P00000000'
 
-/** VUE Name 页面维护 */
-const P_VUE_SETTING = 'P00000190'
-
 /** 按钮维护 */
 const P_SYS_FUNCTIONS = 'P00000220'
 /** 页面维护 */
@@ -100,8 +97,6 @@ export default {
   P_RESOURCE,
   /** 角色 */
   P_ROLE,
-  /** VUE Name 页面编号维护 */
-  P_VUE_SETTING,
   /** 按钮维护 */
   P_SYS_FUNCTIONS,
   /** 页面维护 */
