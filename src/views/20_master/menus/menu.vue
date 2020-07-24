@@ -56,7 +56,17 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="160" prop="type_name" label="类型" fixed />
+      <el-table-column header-align="center" show-overflow-tooltip min-width="160" prop="type_name" label="类型" fixed>
+        <template v-slot="scope">
+          <span class="menu_png">
+            <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_ROOT" class="root">根结点</em>
+            <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_TOPNAV" class="top_nav">顶部导航栏</em>
+            <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_NODE" class="node">结点</em>
+            <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_PAGE" class="page">页面</em>
+            <em v-if="scope.row.is_default" class="default">默认菜单</em>
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="full_path" label="请求地址" fixed />
       <!-- <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="code" label="菜单编号" /> -->
       <!-- <el-table-column header-align="center" show-overflow-tooltip min-width="80" prop="type_name" label="菜单类型" /> -->
@@ -194,6 +204,7 @@ import editSubMenuDialog from '@/views/20_master/menus/dialog/editSubMenu'
 import editSortDialog from '@/views/20_master/menus/dialog/editSort'
 import selectRootNodeDialog from '@/views/20_master/menus/dialog/selectRootNode'
 import deepCopy from 'deep-copy'
+import '@/styles/menu_png.scss'
 
 export default {
   name: constants_program.P_MENU, // 页面id，和router中的name需要一致，作为缓存
