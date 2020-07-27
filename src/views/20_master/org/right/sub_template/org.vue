@@ -24,8 +24,18 @@
       <el-table-column type="index" width="45" label="No" />
       <el-table-column show-overflow-tooltip min-width="250" prop="name" label="组织机构名称" />
       <el-table-column show-overflow-tooltip min-width="150" prop="simple_name" label="组织机构简称" />
-      <el-table-column show-overflow-tooltip min-width="250" prop="code" label="组织机构编码" />
-      <el-table-column show-overflow-tooltip min-width="60" prop="type_text" label="分类" />
+      <!-- <el-table-column show-overflow-tooltip min-width="250" prop="code" label="组织机构编码" /> -->
+      <el-table-column show-overflow-tooltip min-width="60" prop="type_text" label="分类">
+        <template v-slot="scope">
+          <span class="org_png">
+            <em v-if="scope.row.type === '10'" class="tenant">租户</em>
+            <em v-if="scope.row.type === '20'" class="group">集团</em>
+            <em v-if="scope.row.type === '30'" class="company">企业</em>
+            <em v-if="scope.row.type === '40'" class="dept">部门</em>
+            <em v-if="scope.row.type === '50'" class="position">岗位</em>
+          </span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column show-overflow-tooltip min-width="150" prop="son_count" label="子组织机构数量">
         <template slot-scope="scope">
           <span>数量（</span>
@@ -82,6 +92,7 @@
 import elDragDialog from '@/directive/el-drag-dialog'
 import { getListApi } from '@/api/20_master/org/org'
 import deepCopy from 'deep-copy'
+import '@/styles/org_png.scss'
 
 export default {
   // name: 'P00000173', // 页面id，和router中的name需要一致，作为缓存

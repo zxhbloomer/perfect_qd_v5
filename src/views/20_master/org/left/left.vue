@@ -57,7 +57,14 @@
             <svg-icon v-else-if="data.type === '50'" icon-class="perfect-icon-position" class="el-icon--right" />
             {{ data.simple_name }}
           </span>
-          <span>[{{ data.type_text }}]</span>
+          <!-- <span>[{{ data.type_text }}]</span> -->
+          <span class="org_png">
+            <em v-if="data.type === '10'" class="tenant">租户</em>
+            <em v-else-if="data.type === '20'" class="group">集团</em>
+            <em v-else-if="data.type === '30'" class="company">企业</em>
+            <em v-else-if="data.type === '40'" class="dept">部门</em>
+            <em v-else-if="data.type === '50'" class="position">岗位</em>
+          </span>
         </span>
       </el-tree>
     </div>
@@ -327,6 +334,7 @@ import positionDialog from '@/views/20_master/position/dialog/dialog'
 import setPositionDialog from '@/views/20_master/position/dialog/setPosistion'
 import { isNotEmpty } from '@/utils/index.js'
 import { getDataByIdApi } from '@/api/20_master/position/position'
+import '@/styles/org_png.scss'
 
 export default {
   // name: 'P00000171', // 页面id，和router中的name需要一致，作为缓存
