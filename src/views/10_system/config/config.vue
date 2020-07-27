@@ -70,7 +70,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip sortable="custom" :sort-orders="settings.sortOrders" min-width="120" prop="descr" label="描述" />
+      <el-table-column show-overflow-tooltip sortable="custom" :sort-orders="settings.sortOrders" min-width="120" prop="descr" label="说明" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="50" :sort-orders="settings.sortOrders" prop="u_name" label="更新人" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="180" :sort-orders="settings.sortOrders" prop="u_time" label="更新时间">
         <template v-slot="scope">
@@ -116,7 +116,7 @@
             <el-input v-model.trim="dataJson.tempJson.value" clearable show-word-limit :maxlength="dataJson.inputSettings.maxLength.value" :placeholder="isPlaceholderShow('请输入')" :disabled="isViewModel" />
           </el-form-item>
         </el-row>
-        <el-form-item label="描述：" prop="descr">
+        <el-form-item label="说明：" prop="descr">
           <el-input v-model.trim="dataJson.tempJson.descr" clearable show-word-limit type="textarea" :maxlength="dataJson.inputSettings.maxLength.descr" :placeholder="isPlaceholderShow('请输入')" :disabled="isViewModel" />
         </el-form-item>
         <el-row v-show="popSettingsData.dialogStatus === PARAMETERS.STATUS_UPDATE || isViewModel">

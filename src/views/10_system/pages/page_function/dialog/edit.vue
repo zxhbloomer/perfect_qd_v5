@@ -84,7 +84,7 @@
         <el-form-item label="权限标识：" prop="perms">
           <el-input v-model.trim="dataJson.tempJson.perms" disabled />
         </el-form-item>
-        <el-form-item label="描述：" prop="descr">
+        <el-form-item label="说明：" prop="descr">
           <el-input v-model.trim="dataJson.tempJson.descr" clearable show-word-limit type="textarea" :maxlength="dataJson.inputSettings.maxLength.descr" :disabled="isViewModel" />
         </el-form-item>
 

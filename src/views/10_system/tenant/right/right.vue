@@ -239,7 +239,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="描述：" prop="templateDescr">
+        <el-form-item label="说明：" prop="templateDescr">
           <el-input v-model.trim="dataJson.tempJson.descr" type="textarea" placeholder="请输入" />
         </el-form-item>
 

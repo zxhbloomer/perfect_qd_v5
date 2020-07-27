@@ -96,7 +96,7 @@
           {{ formatDate(scope.row.setup_date) }}
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="descr" label="描述" />
+      <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="descr" label="说明" />
       <el-table-column header-align="center" min-width="80" :sort-orders="settings.sortOrders" label="删除">
         <template v-slot:header>
           <span>

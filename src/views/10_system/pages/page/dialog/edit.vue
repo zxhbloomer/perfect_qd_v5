@@ -60,7 +60,7 @@
       <el-form-item label="权限标识：" prop="perms">
         <el-input v-model.trim="dataJson.tempJson.perms" clearable show-word-limit :maxlength="dataJson.inputSettings.maxLength.perms" :disabled="isViewModel" />
       </el-form-item>
-      <el-form-item label="描述：" prop="descr">
+      <el-form-item label="说明：" prop="descr">
         <el-input v-model.trim="dataJson.tempJson.descr" clearable show-word-limit type="textarea" :maxlength="dataJson.inputSettings.maxLength.descr" :disabled="isViewModel" />
       </el-form-item>
       <el-row v-show="settings.dialogStatus === PARAMETERS.STATUS_UPDATE">

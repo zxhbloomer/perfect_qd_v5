@@ -94,7 +94,7 @@
       <el-table-column show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="code" label="角色编码" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="type" label="角色类型" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="name" label="角色名称" />
-      <el-table-column show-overflow-tooltip sortable="custom" min-width="270" :sort-orders="settings.sortOrders" prop="descr" label="描述" />
+      <el-table-column show-overflow-tooltip sortable="custom" min-width="270" :sort-orders="settings.sortOrders" prop="descr" label="说明" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="170" :sort-orders="settings.sortOrders" prop="simple_name" label="简称" />
       <el-table-column min-width="45" :sort-orders="settings.sortOrders" label="删除">
         <template v-slot="scope">
@@ -232,7 +232,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="描述：" prop="descr">
+        <el-form-item label="说明：" prop="descr">
           <el-input v-model.trim="dataJson.tempJson.descr" clearable type="textarea" show-word-limit :maxlength="dataJson.inputSettings.maxLength.descr" />
         </el-form-item>
         <el-row>

@@ -49,7 +49,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="描述：" prop="descr">
+      <el-form-item label="说明：" prop="descr">
         <el-input v-model.trim="dataJson.tempJson.descr" clearable type="textarea" show-word-limit :maxlength="dataJson.inputSettings.maxLength.descr" :disabled="isViewModel" :placeholder="isPlaceholderShow('请输入')" />
       </el-form-item>
       <el-row v-show="settings.dialogStatus === PARAMETERS.STATUS_UPDATE || isViewModel">

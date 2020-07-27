@@ -60,8 +60,8 @@
           <el-input placeholder="办公电话" prop="name2" />
         </el-form-item>
         <el-row>
-          <el-form-item label="描述">
-            <el-input type="textarea" placeholder="描述" prop="name2" />
+          <el-form-item label="说明">
+            <el-input type="textarea" placeholder="说明" prop="name2" />
           </el-form-item>
         </el-row>
       </el-form>

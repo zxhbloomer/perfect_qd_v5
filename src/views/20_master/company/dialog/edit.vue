@@ -88,7 +88,7 @@
                   <el-switch v-model="dataJson.tempJson.long_term" inactive-text="营业有效期" active-text="长期" :disabled="isViewModel" @change="handleLongTermChange" /></el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="描述：" prop="descr">
+            <el-form-item label="说明：" prop="descr">
               <el-input v-model.trim="dataJson.tempJson.descr" clearable show-word-limit type="textarea" :maxlength="dataJson.inputSettings.maxLength.descr" :placeholder="isPlaceholderShow('请输入')" :disabled="isViewModel" /></el-form-item>
 
           </el-tab-pane>

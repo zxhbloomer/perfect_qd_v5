@@ -48,7 +48,7 @@
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip sortable="custom" min-width="120" :sort-orders="settings.sortOrders" prop="juridical_name" label="法定代表人" />
-      <el-table-column show-overflow-tooltip min-width="150" prop="descr" label="描述" />
+      <el-table-column show-overflow-tooltip min-width="150" prop="descr" label="说明" />
       <el-table-column min-width="80" :sort-orders="settings.sortOrders" label="删除">
         <template v-slot:header>
           <span>

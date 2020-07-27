@@ -85,7 +85,7 @@
       <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="sub_handler_id_name" label="部门副主管" />
       <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="leader_id_name" label="上级主管领导" />
       <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="response_leader_id_name" label="上级分管领导" />
-      <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="descr" label="描述" />
+      <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="descr" label="说明" />
       <el-table-column header-align="center" min-width="90" :sort-orders="settings.sortOrders" label="删除">
         <template v-slot:header>
           <span>

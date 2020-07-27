@@ -66,7 +66,7 @@
       <el-table-column type="index" width="45" label="No" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="80" :sort-orders="settings.sortOrders" prop="type" label="资源类型" />
       <el-table-column show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="name" label="名称" />
-      <el-table-column show-overflow-tooltip min-width="150" prop="descr" label="描述" />
+      <el-table-column show-overflow-tooltip min-width="150" prop="descr" label="说明" />
       <el-table-column min-width="45" :sort-orders="settings.sortOrders" label="删除" :render-header="renderHeaderIsDel">
         <template v-slot="scope">
           <el-tooltip :content="scope.row.is_del === 'false' ? '删除状态：已删除' : '删除状态：未删除' " placement="top" :open-delay="500">
@@ -141,7 +141,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="描述：" prop="descr">
+          <el-form-item label="说明：" prop="descr">
             <el-input v-model.trim="dataJson.tempJson.descr" clearable type="textarea" show-word-limit :maxlength="dataJson.inputSettings.maxLength.descr" />
           </el-form-item>
           <el-form-item label="JSON配置信息：" prop="context">

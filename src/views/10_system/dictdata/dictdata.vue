@@ -74,7 +74,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip min-width="180" prop="descr" label="字典描述" />
+      <el-table-column show-overflow-tooltip min-width="180" prop="descr" label="字典说明" />
       <el-table-column min-width="70" label="删除" :render-header="renderHeaderIsDel">
         <template v-slot="scope">
           <el-tooltip :content="scope.row.is_del === 'false' ? '删除状态：已删除' : '删除状态：未删除' " placement="top" :open-delay="500">
@@ -189,7 +189,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="字典类型描述：" prop="dictTypeDescr">
+        <el-form-item label="字典类型说明：" prop="dictTypeDescr">
           <el-input v-model.trim="popSettingsData.searchDialogData.selectedDataJson.descr" type="textarea" disabled />
         </el-form-item>
         <el-alert
@@ -241,7 +241,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="描述：" prop="descr">
+        <el-form-item label="说明：" prop="descr">
           <el-input v-model.trim="dataJson.tempJson.descr" clearable type="textarea" show-word-limit :maxlength="dataJson.inputSettings.maxLength.descr" />
         </el-form-item>
         <el-row v-show="popSettingsData.dialogStatus === PARAMETERS.STATUS_UPDATE">
