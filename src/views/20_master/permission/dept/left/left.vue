@@ -28,7 +28,6 @@
         node-key="id"
         default-expand-all
         class="tree"
-        draggable
         @current-change="handleCurrentChange"
       >
         <span slot-scope="{ node, data }" class="custom-tree-node">
@@ -39,6 +38,9 @@
             <svg-icon v-else-if="data.type === '40'" icon-class="perfect-icon-dept" class="el-icon--right" />
             <svg-icon v-else-if="data.type === '50'" icon-class="perfect-icon-position" class="el-icon--right" />
             {{ data.simple_name }}
+            <el-link v-if="data.type === '40'" type="danger" style="vertical-align:top">
+              (0)
+            </el-link>
           </span>
           <!-- <span>[{{ data.type_text }}]</span> -->
           <span class="org_png">
@@ -225,7 +227,7 @@
 </style>
 
 <script>
-import { getTreeListApi } from '@/api/20_master/permission/dept/permission_dept'
+import { getTreeListApi } from '@/api/20_master/permission/org/org'
 import elDragDialog from '@/directive/el-drag-dialog'
 import '@/styles/org_png.scss'
 
@@ -394,7 +396,7 @@ export default {
     },
     filterNode(value, data) {
       if (!value) return true
-      return data.label.indexOf(value) !== -1
+      return data.label.indexOf(value) !== -1 || data.type_text.indexOf(value) !== -1
     },
     getDataList() {
       // 查询逻辑

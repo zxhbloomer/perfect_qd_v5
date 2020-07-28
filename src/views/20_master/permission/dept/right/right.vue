@@ -2,28 +2,12 @@
   <div>
     <el-tabs v-model="settings.tabs.activeName" @tab-click="handleTabsClick">
       <el-tab-pane name="org" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
-        <template slot="label">组织机构<el-badge v-show="dataJson.listData.orgs_count>0" :value="dataJson.listData.orgs_count" type="danger" /></template>
-        <org-template :height="height" />
+        <template slot="label">权限列表<el-badge v-show="dataJson.listData.orgs_count>0" :value="dataJson.listData.orgs_count" type="danger" /></template>
+        <permission-template :height="height" />
       </el-tab-pane>
       <el-tab-pane name="group" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
         <template slot="label">集团信息<el-badge v-show="dataJson.listData.group_count>0" :value="dataJson.listData.group_count" type="danger" /></template>
         <group-template :height="height - 42" />
-      </el-tab-pane>
-      <el-tab-pane>
-        <template slot="label">企业信息<el-badge v-show="dataJson.listData.company_count>0" :value="dataJson.listData.company_count" type="danger" /></template>
-        <company-template :height="height - 42" />
-      </el-tab-pane>
-      <el-tab-pane>
-        <template slot="label">部门信息<el-badge v-show="dataJson.listData.dept_count>0" :value="dataJson.listData.dept_count" type="danger" /></template>
-        <dept-template :height="height - 42" />
-      </el-tab-pane>
-      <el-tab-pane>
-        <template slot="label">岗位信息<el-badge v-show="dataJson.listData.position_count>0" :value="dataJson.listData.position_count" type="danger" /></template>
-        <position-template :height="height - 42" />
-      </el-tab-pane>
-      <el-tab-pane>
-        <template slot="label">员工信息<el-badge v-show="dataJson.listData.staff_count>0" :value="dataJson.listData.staff_count" type="danger" /></template>
-        <staff-template :height="height - 57" />
       </el-tab-pane>
     </el-tabs>
 
@@ -73,17 +57,12 @@
 <script>
 import { getAllOrgDataCountApi } from '@/api/20_master/org/org'
 import elDragDialog from '@/directive/el-drag-dialog'
-import orgTemplate from '@/views/20_master/org/right/sub_template/org'
+import permissionTemplate from '../right/sub_template/permission'
 import groupTemplate from '@/views/20_master/org/right/sub_template/group'
-import companyTemplate from '@/views/20_master/org/right/sub_template/company'
-import deptTemplate from '@/views/20_master/org/right/sub_template/dept'
-import positionTemplate from '@/views/20_master/org/right/sub_template/position'
-import staffTemplate from '@/views/20_master/org/right/sub_template/staff'
 import deepCopy from 'deep-copy'
 
 export default {
-  // name: 'P00000172', // 页面id，和router中的name需要一致，作为缓存
-  components: { orgTemplate, groupTemplate, companyTemplate, deptTemplate, positionTemplate, staffTemplate },
+  components: { permissionTemplate, groupTemplate },
   directives: { elDragDialog },
   props: {
     height: {
