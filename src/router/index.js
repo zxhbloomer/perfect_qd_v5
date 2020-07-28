@@ -170,6 +170,20 @@ export const asyncRoutes = [
         meta: { title: '租户管理', icon: 'tenant' }
       },
       {
+        path: 'permission',
+        redirect: 'noRedirect',
+        alwaysShow: true,
+        meta: { title: '权限管理', icon: 'permission', noCache: true },
+        children: [
+          {
+            path: 'dept',
+            component: () => import('@/views/20_master/permission/dept/permission_dept'),
+            name: 'P00000250',
+            meta: { title: '部门权限维护' }
+          }
+        ]
+      },
+      {
         path: 'fun',
         // component: subMenu,
         redirect: 'noRedirect',

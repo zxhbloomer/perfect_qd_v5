@@ -48,6 +48,8 @@ const P_SYS_PAGE_FUNCTIONS = 'P00000210'
 const P_MENUS = 'P00000240'
 /** 系统icon */
 const P_ICONS = 'P00000230'
+/** 部门权限 */
+const P_PERMISSION_DEPT = 'P00000250'
 
 export default {
   /** 组织机构 */
@@ -98,5 +100,7 @@ export default {
   /** 菜单维护 */
   P_MENUS,
   /** 系统icon */
-  P_ICONS
+  P_ICONS,
+  /** 部门权限 */
+  P_PERMISSION_DEPT
 }

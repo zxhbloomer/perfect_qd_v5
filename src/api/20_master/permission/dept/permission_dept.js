@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getTreeListApi(query) {
   return request({
-    url: '/api/v1/org/tree/list',
+    url: '/api/v1/permission/dept/tree/list',
     method: 'post',
     data: query
   })
@@ -18,7 +18,7 @@ export function getTreeListApi(query) {
  */
 export function getListApi(query) {
   return request({
-    url: '/api/v1/org/list',
+    url: '/api/v1/permission/dept/list',
     method: 'post',
     data: query
   })
@@ -30,7 +30,7 @@ export function getListApi(query) {
  */
 export function getAllOrgDataCountApi(query) {
   return request({
-    url: '/api/v1/org/count',
+    url: '/api/v1/permission/dept/count',
     method: 'post',
     data: query
   })
@@ -42,7 +42,7 @@ export function getAllOrgDataCountApi(query) {
  */
 export function getGroupsListApi(query) {
   return request({
-    url: '/api/v1/org/groups',
+    url: '/api/v1/permission/dept/groups',
     method: 'post',
     data: query
   })
@@ -54,7 +54,7 @@ export function getGroupsListApi(query) {
  */
 export function getCompanyListApi(query) {
   return request({
-    url: '/api/v1/org/companies',
+    url: '/api/v1/permission/dept/companies',
     method: 'post',
     data: query
   })
@@ -66,7 +66,7 @@ export function getCompanyListApi(query) {
  */
 export function getDeptListApi(query) {
   return request({
-    url: '/api/v1/org/depts',
+    url: '/api/v1/permission/dept/depts',
     method: 'post',
     data: query
   })
@@ -78,7 +78,7 @@ export function getDeptListApi(query) {
  */
 export function getPositionListApi(query) {
   return request({
-    url: '/api/v1/org/positions',
+    url: '/api/v1/permission/dept/positions',
     method: 'post',
     data: query
   })
@@ -90,7 +90,7 @@ export function getPositionListApi(query) {
  */
 export function getStaffTransferListApi(query) {
   return request({
-    url: '/api/v1/org/staff/transfer/list',
+    url: '/api/v1/permission/dept/staff/transfer/list',
     method: 'post',
     data: query
   })
@@ -102,7 +102,7 @@ export function getStaffTransferListApi(query) {
  */
 export function setStaffTransferApi(query) {
   return request({
-    url: '/api/v1/org/staff/transfer/save',
+    url: '/api/v1/permission/dept/staff/transfer/save',
     method: 'post',
     data: query
   })
@@ -114,69 +114,9 @@ export function setStaffTransferApi(query) {
  */
 export function getStaffListApi(query) {
   return request({
-    url: '/api/v1/org/staffs',
+    url: '/api/v1/permission/dept/staffs',
     method: 'post',
     data: query
-  })
-}
-
-/**
- * 更新api
- * @param {*} data
- */
-export function updateApi(data) {
-  return request({
-    url: '/api/v1/org/save',
-    method: 'post',
-    data
-  })
-}
-
-/**
- * 插入api
- * @param {*} data
- */
-export function insertApi(data) {
-  return request({
-    url: '/api/v1/org/insert',
-    method: 'post',
-    data
-  })
-}
-
-/**
- * 新增模式下，可新增子结点得类型
- * @param {*} data
- */
-export function getCorrectTypeByInsertStatusApi(data) {
-  return request({
-    url: '/api/v1/org/get_type',
-    method: 'post',
-    data
-  })
-}
-
-/**
- * 删除子结点
- * @param {*} data
- */
-export function deleteApi(data) {
-  return request({
-    url: '/api/v1/org/delete',
-    method: 'post',
-    data
-  })
-}
-
-/**
- * 组织架构主表数据更新保存，拖拽后，全量更
- * @param {*} data
- */
-export function dragsaveApi(data) {
-  return request({
-    url: '/api/v1/org/dragsave',
-    method: 'post',
-    data
   })
 }
 
@@ -186,20 +126,8 @@ export function dragsaveApi(data) {
  */
 export function getStaffTabListApi(data) {
   return request({
-    url: '/api/v1/org/staff/list',
+    url: '/api/v1/permission/dept/staff/list',
     method: 'post',
     data
-  })
-}
-
-/**
- * 查询用户接口，
- * @param {*} data
- */
-export function getUserDataByIdApi(query) {
-  return request({
-    url: '/api/v1/staff/list',
-    method: 'post',
-    data: query
   })
 }
