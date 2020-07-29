@@ -376,7 +376,7 @@ export default {
   created() {
     // 初始化查询
     this.getDataList()
-    this.$on(this.EMITS.EMIT_ORG_LEFT, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LEFT, _data => {
       this.handleRefresh()
     })
   },

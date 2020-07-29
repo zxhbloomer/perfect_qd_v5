@@ -15,18 +15,40 @@ const EMIT_LOADING_OK = 'global:getDataList_loading_ok'
  *        tab5：岗位信息
  *        tab6：员工信息
  */
-const EMIT_ORG_LEFT = 'global:getDataListLeft'
-const EMIT_ORG_CHANGE = 'global:getDataList'
-const EMIT_ORG_CHANGE_LOADING = 'global:getDataList_loading'
-const EMIT_ORG_CHANGE_LOADING_OK = 'global:getDataList_loading_ok'
-const EMIT_ORG_POSITION_UPDATED = 'global:position_updated'
+const EMIT_ORG_LEFT = 'global_org:getDataListLeft'
+const EMIT_ORG_CHANGE = 'global_org:getDataList'
+const EMIT_ORG_CHANGE_LOADING = 'global_org:getDataList_loading'
+const EMIT_ORG_CHANGE_LOADING_OK = 'global_org:getDataList_loading_ok'
+const EMIT_ORG_POSITION_UPDATED = 'global_org:position_updated'
+
+/**
+ * 部门权限页面之间，进行通讯，兄弟通讯，
+ * left：树
+ * right：tabs
+ *        tab1：权限列表
+ *        tab2：操作权限
+ */
+const EMIT_PERMISSION_DEPT_LEFT = 'global_permission_dept:getDataListLeft'
+const EMIT_PERMISSION_DEPT_CHANGE = 'global_permission_dept:getDataList'
+const EMIT_PERMISSION_DEPT_LOADING = 'global_permission_dept:getDataList_loading'
+const EMIT_PERMISSION_DEPT_LOADING_OK = 'global_permission_dept:getDataList_loading_ok'
 
 export default {
   EMIT_LOADING,
   EMIT_LOADING_OK,
+  /**
+   * 组织机构管理页面之间，进行通讯，兄弟通讯，
+   */
   EMIT_ORG_LEFT,
   EMIT_ORG_CHANGE,
   EMIT_ORG_CHANGE_LOADING,
   EMIT_ORG_CHANGE_LOADING_OK,
-  EMIT_ORG_POSITION_UPDATED
+  EMIT_ORG_POSITION_UPDATED,
+  /**
+   * 部门权限页面之间，进行通讯，兄弟通讯，
+   */
+  EMIT_PERMISSION_DEPT_LEFT,
+  EMIT_PERMISSION_DEPT_CHANGE,
+  EMIT_PERMISSION_DEPT_LOADING,
+  EMIT_PERMISSION_DEPT_LOADING_OK
 }

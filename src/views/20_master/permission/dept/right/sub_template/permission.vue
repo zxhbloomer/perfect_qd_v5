@@ -174,7 +174,7 @@
 <script>
 import '@/styles/org_png.scss'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { getListApi } from '@/api/20_master/org/org'
+import { getListApi } from '@/api/20_master/permission/dept/permission'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
