@@ -13,6 +13,7 @@
       :model="dataJson.searchForm"
       label-position="getLabelPosition()"
       class="floatRight"
+      :disabled="!is_dept"
     >
       <el-form-item label="">
         <el-input v-model.trim="dataJson.searchForm.name" clearable placeholder="权限名称" />
@@ -21,18 +22,18 @@
         <delete-type-normal v-model="dataJson.searchForm.is_del" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" plain icon="el-icon-search" @click="handleSearch">查询</el-button>
+        <el-button :disabled="!is_dept" type="primary" plain icon="el-icon-search" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" plain icon="perfect-icon-reset" @click="handleResetSearch">重置</el-button>
+        <el-button :disabled="!is_dept" type="primary" plain icon="perfect-icon-reset" @click="handleResetSearch">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-button-group>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="settings.loading" @click="handleInsert">新增</el-button>
-      <el-button :disabled="!settings.btnShowStatus.showUpdate" type="primary" icon="el-icon-edit-outline" :loading="settings.loading" @click="handleUpdate">修改</el-button>
-      <el-button :disabled="!settings.btnShowStatus.showCopyInsert" type="primary" icon="el-icon-camera-solid" :loading="settings.loading" @click="handleCopyInsert">复制新增</el-button>
-      <el-button :disabled="!settings.btnShowStatus.showUpdate" type="primary" icon="el-icon-info" :loading="settings.loading" @click="handleView">查看</el-button>
+      <el-button :disabled="!is_dept" type="primary" icon="el-icon-circle-plus-outline" :loading="settings.loading" @click="handleInsert">新增</el-button>
+      <el-button :disabled="!is_dept || !settings.btnShowStatus.showUpdate" type="primary" icon="el-icon-edit-outline" :loading="settings.loading" @click="handleUpdate">修改</el-button>
+      <el-button :disabled="!is_dept || !settings.btnShowStatus.showCopyInsert" type="primary" icon="el-icon-camera-solid" :loading="settings.loading" @click="handleCopyInsert">复制新增</el-button>
+      <el-button :disabled="!is_dept || !settings.btnShowStatus.showUpdate" type="primary" icon="el-icon-info" :loading="settings.loading" @click="handleView">查看</el-button>
     </el-button-group>
 
     <el-table
@@ -168,7 +169,8 @@ export default {
       dataJson: {
         // 头部提示栏
         head: {
-          info: ''
+          info: '',
+          is_dept: false
         },
         // 查询使用的json
         searchForm: {
@@ -199,7 +201,7 @@ export default {
           showExport: false
         },
         // loading 状态
-        loading: true,
+        loading: false,
         duration: 4000
       },
       popSettings: {
@@ -216,6 +218,9 @@ export default {
     }
   },
   computed: {
+    is_dept() {
+      return this.dataJson.head.is_dept
+    }
   },
   // 监听器
   watch: {
@@ -259,22 +264,29 @@ export default {
       // 初始化头部提示数据
       if (_data.type !== this.CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT) {
         this.dataJson.head.info = '请选择部门组织，设置部门权限！！'
+        this.dataJson.head.is_dept = false
+        this.dataJson.listData = null
+      } else {
+        this.dataJson.head.info = '当前选择部门：' + _data.name
+        this.dataJson.head.is_dept = true
+        this.getDataList(_data)
       }
-      this.getDataList(_data)
     })
   },
   methods: {
     initShow() {
       // 初始化查询
-      this.getDataList()
+      // this.getDataList()
     },
     // 下拉选项控件事件
     handleSelectChange(val) {
     },
     // 获取行索引
     getRowIndex(row) {
-      const _index = this.dataJson.listData.lastIndexOf(row)
-      return _index
+      if (this.dataJson.listData !== null) {
+        const _index = this.dataJson.listData.lastIndexOf(row)
+        return _index
+      }
     },
     // 行点击
     handleRowClick(row) {
@@ -312,7 +324,14 @@ export default {
 
       // 查询逻辑
       this.settings.loading = true
-      const condition = { ...this.dataJson.searchForm.condition, ...{ pageCondition: this.dataJson.searchForm.pageCondition }}
+      const condition = {
+        ...{ type: this.dataJson.searchForm.condition !== null ? this.dataJson.searchForm.condition.type : null },
+        ...{ serial_type: this.dataJson.searchForm.condition !== null ? this.dataJson.searchForm.condition.serial_type : null },
+        ...{ serial_id: this.dataJson.searchForm.condition !== null ? this.dataJson.searchForm.condition.serial_id : null },
+        ...{ pageCondition: this.dataJson.searchForm.pageCondition },
+        ...{ name: this.dataJson.searchForm.name },
+        ...{ is_del: this.dataJson.searchForm.is_del }
+      }
       getListApi(condition).then(response => {
         this.dataJson.listData = response.data.records
         this.dataJson.paging = response.data
@@ -366,6 +385,10 @@ export default {
     handleInsert() {
       // 新增
       this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_INSERT
+      this.popSettings.one.props.data = {
+        serial_type: this.dataJson.searchForm.condition.serial_type,
+        serial_id: this.dataJson.searchForm.condition.serial_id
+      }
       this.popSettings.one.visible = true
     },
     // 点击按钮 复制新增

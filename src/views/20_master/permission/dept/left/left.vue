@@ -197,13 +197,6 @@
     margin-left: 0px;
   }
 
-  // .el-tree-node:after {
-  //   border-top: 1px solid #4386c6;
-  //   height: 20px;
-  //   top: 12px;
-  //   width: 8px;
-  // }
-
   .el-tree>.el-tree-node{
     min-width:100%;
     display: inline-block ;
@@ -277,50 +270,9 @@ export default {
       popSettingsData: {
         // 弹出窗口状态名称
         dialogStatus: '',
-        textMap: {
-          update: '请选择要修改结点的类型',
-          insert: '请选择添加下级结点类型'
-        },
         dialogFormVisible: false,
         btnDisabledStatus: {
           disabledOK: false
-        },
-        // 弹出的查询框参数设置
-        searchDialogDataOne: {
-          // 弹出框显示参数
-          visible: false,
-          // 点击确定以后返回的值
-          selectedDataJson: {}
-        },
-        // 弹出的查询框参数设置
-        searchDialogDataTwo: {
-          // 弹出框显示参数
-          visible: false,
-          // 点击确定以后返回的值
-          selectedDataJson: {}
-        },
-        // 弹出的查询框参数设置
-        searchDialogDataThree: {
-          // 弹出框显示参数
-          visible: false,
-          // 点击确定以后返回的值
-          selectedDataJson: {}
-        },
-        // 弹出的查询框参数设置
-        searchDialogDataFour: {
-          // 弹出框显示参数
-          visible: false,
-          // 点击确定以后返回的值
-          selectedDataJson: {}
-        },
-        // 弹出的查询框参数设置
-        searchDialogDataFive: {
-          id: undefined,
-          data: null,
-          // 弹出框显示参数
-          visible: false,
-          // 点击确定以后返回的值
-          selectedDataJson: {}
         }
       }
     }

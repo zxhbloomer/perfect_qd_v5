@@ -34,6 +34,7 @@
           <el-form-item label="使用状态：" prop="status">
             <el-switch
               v-model="dataJson.tempJson.status"
+              disabled
               inactive-text="未使用"
               active-text="使用中"
             />
@@ -123,7 +124,9 @@ export default {
           id: undefined,
           name: '',
           descr: '',
-          dbversion: 0
+          dbversion: 0,
+          serial_type: this.data.serial_type,
+          serial_id: this.data.serial_id
         },
         // 单条数据 json
         tempJson: null,
@@ -346,6 +349,8 @@ export default {
         if (valid) {
           // const tempData = Object.assign({}, this.dataJson.tempJson)
           const tempData = deepCopy(this.dataJson.tempJson)
+          tempData.type = this.CONSTANTS.DICT_MSTR_PERMISSION_TYPE_DEPT
+
           this.settings.loading = true
           insertApi(tempData).then((_data) => {
             this.$emit('closeMeOk', { return_flag: true, data: _data })

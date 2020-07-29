@@ -65,6 +65,16 @@ const DICT_SYS_MENU_TYPE_TOPNAV = 'T'
 const DICT_SYS_MENU_TYPE_NODE = 'N'
 /** 页面  */
 const DICT_SYS_MENU_TYPE_PAGE = 'P'
+/** 权限类型  */
+const DICT_MSTR_PERMISSION_TYPE = 'mstr_permission_type'
+/** 部门权限  */
+const DICT_MSTR_PERMISSION_TYPE_DEPT = '10'
+/** 岗位权限  */
+const DICT_MSTR_PERMISSION_TYPE_POSITION = '20'
+/** 用户权限  */
+const DICT_MSTR_PERMISSION_TYPE_USER = '30'
+/** 排除权限  */
+const DICT_MSTR_PERMISSION_TYPE_OUT = '40'
 
 export default {
   /** 隐藏显示类型： 0：显示 1：隐藏 null:全部 */
@@ -123,5 +133,15 @@ export default {
   /** 结点  */
   DICT_SYS_MENU_TYPE_NODE,
   /** 页面  */
-  DICT_SYS_MENU_TYPE_PAGE
+  DICT_SYS_MENU_TYPE_PAGE,
+  /** 权限类型  */
+  DICT_MSTR_PERMISSION_TYPE,
+  /** 部门权限  */
+  DICT_MSTR_PERMISSION_TYPE_DEPT,
+  /** 岗位权限  */
+  DICT_MSTR_PERMISSION_TYPE_POSITION,
+  /** 用户权限  */
+  DICT_MSTR_PERMISSION_TYPE_USER,
+  /** 排除权限  */
+  DICT_MSTR_PERMISSION_TYPE_OUT
 }
