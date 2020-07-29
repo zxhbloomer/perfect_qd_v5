@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-alert
-      title="当前选择部门：业务一部"
+      :title="dataJson.head.info"
       type="success"
       effect="dark"
       :closable="false"
@@ -166,13 +166,13 @@ export default {
   data() {
     return {
       dataJson: {
-        // 级联选择器数据
-        cascader: {
-          data: null,
-          value: ''
+        // 头部提示栏
+        head: {
+          info: ''
         },
         // 查询使用的json
         searchForm: {
+          condition: null,
           // 翻页条件
           pageCondition: deepCopy(this.PARAMETERS.PAGE_CONDITION),
           // 查询条件
@@ -254,7 +254,12 @@ export default {
   },
   mounted() {
     // 描绘完成
-    this.$on(this.EMITS.EMIT_ORG_CHANGE, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE, _data => {
+      this.dataJson.searchForm.condition = _data
+      // 初始化头部提示数据
+      if (_data.type !== this.CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT) {
+        this.dataJson.head.info = '请选择部门组织，设置部门权限！！'
+      }
       this.getDataList(_data)
     })
   },
@@ -299,21 +304,22 @@ export default {
     },
     getDataList(val) {
       // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING)
-      this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING)
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
 
       this.dataJson.searchForm.pageCondition.current = this.dataJson.paging.current
       this.dataJson.searchForm.pageCondition.size = this.dataJson.paging.size
 
       // 查询逻辑
       this.settings.loading = true
-      getListApi(this.dataJson.searchForm).then(response => {
+      const condition = { ...this.dataJson.searchForm.condition, ...{ pageCondition: this.dataJson.searchForm.pageCondition }}
+      getListApi(condition).then(response => {
         this.dataJson.listData = response.data.records
         this.dataJson.paging = response.data
         this.dataJson.paging.records = {}
         // 通知兄弟组件
-        this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
+        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
       }).finally(() => {
         this.settings.loading = false
       })

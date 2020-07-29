@@ -68,11 +68,11 @@
             >
               <span slot-scope="{ node, data }" class="custom-tree-node">
                 <span>
-                  <svg-icon v-if="data.type === '10'" icon-class="perfect-icon-tenant" class="el-icon--right" />
-                  <svg-icon v-else-if="data.type === '20'" icon-class="perfect-icon-group" class="el-icon--right" />
-                  <svg-icon v-else-if="data.type === '30'" icon-class="perfect-icon-company" class="el-icon--right" />
-                  <svg-icon v-else-if="data.type === '40'" icon-class="perfect-icon-dept" class="el-icon--right" />
-                  <svg-icon v-else-if="data.type === '50'" icon-class="perfect-icon-position" class="el-icon--right" />
+                  <svg-icon v-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_TENANT" icon-class="perfect-icon-tenant" class="el-icon--right" />
+                  <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_GROUP" icon-class="perfect-icon-group" class="el-icon--right" />
+                  <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_COMPANY" icon-class="perfect-icon-company" class="el-icon--right" />
+                  <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" icon-class="perfect-icon-dept" class="el-icon--right" />
+                  <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_POSITION" icon-class="perfect-icon-position" class="el-icon--right" />
                   {{ node.label }}
                 </span>
                 <span>[{{ data.type_text }}]</span>

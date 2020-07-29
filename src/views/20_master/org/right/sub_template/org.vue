@@ -28,11 +28,11 @@
       <el-table-column show-overflow-tooltip min-width="60" prop="type_text" label="分类">
         <template v-slot="scope">
           <span class="org_png">
-            <em v-if="scope.row.type === '10'" class="tenant">租户</em>
-            <em v-if="scope.row.type === '20'" class="group">集团</em>
-            <em v-if="scope.row.type === '30'" class="company">企业</em>
-            <em v-if="scope.row.type === '40'" class="dept">部门</em>
-            <em v-if="scope.row.type === '50'" class="position">岗位</em>
+            <em v-if="scope.row.type === CONSTANTS.DICT_ORG_SETTING_TYPE_TENANT" class="tenant">租户</em>
+            <em v-if="scope.row.type === CONSTANTS.DICT_ORG_SETTING_TYPE_GROUP" class="group">集团</em>
+            <em v-if="scope.row.type === CONSTANTS.DICT_ORG_SETTING_TYPE_COMPANY" class="company">企业</em>
+            <em v-if="scope.row.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" class="dept">部门</em>
+            <em v-if="scope.row.type === CONSTANTS.DICT_ORG_SETTING_TYPE_POSITION" class="position">岗位</em>
           </span>
         </template>
       </el-table-column>

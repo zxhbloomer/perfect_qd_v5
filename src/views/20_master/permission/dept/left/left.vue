@@ -32,23 +32,23 @@
       >
         <span slot-scope="{ node, data }" class="custom-tree-node">
           <span>
-            <svg-icon v-if="data.type === '10'" icon-class="perfect-icon-tenant" class="el-icon--right" />
-            <svg-icon v-else-if="data.type === '20'" icon-class="perfect-icon-group" class="el-icon--right" />
-            <svg-icon v-else-if="data.type === '30'" icon-class="perfect-icon-company" class="el-icon--right" />
-            <svg-icon v-else-if="data.type === '40'" icon-class="perfect-icon-dept" class="el-icon--right" />
-            <svg-icon v-else-if="data.type === '50'" icon-class="perfect-icon-position" class="el-icon--right" />
+            <svg-icon v-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_TENANT" icon-class="perfect-icon-tenant" class="el-icon--right" />
+            <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_GROUP" icon-class="perfect-icon-group" class="el-icon--right" />
+            <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_COMPANY" icon-class="perfect-icon-company" class="el-icon--right" />
+            <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" icon-class="perfect-icon-dept" class="el-icon--right" />
+            <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_POSITION" icon-class="perfect-icon-position" class="el-icon--right" />
             {{ data.simple_name }}
-            <el-link v-if="data.type === '40'" type="danger" style="vertical-align:top">
+            <el-link v-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" type="danger" style="vertical-align:top">
               (0)
             </el-link>
           </span>
           <!-- <span>[{{ data.type_text }}]</span> -->
           <span class="org_png">
-            <em v-if="data.type === '10'" class="tenant">租户</em>
-            <em v-else-if="data.type === '20'" class="group">集团</em>
-            <em v-else-if="data.type === '30'" class="company">企业</em>
-            <em v-else-if="data.type === '40'" class="dept">部门</em>
-            <em v-else-if="data.type === '50'" class="position">岗位</em>
+            <em v-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_TENANT" class="tenant">租户</em>
+            <em v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_GROUP" class="group">集团</em>
+            <em v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_COMPANY" class="company">企业</em>
+            <em v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" class="dept">部门</em>
+            <em v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_POSITION" class="position">岗位</em>
           </span>
         </span>
       </el-tree>
