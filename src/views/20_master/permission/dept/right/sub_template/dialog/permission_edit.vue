@@ -27,7 +27,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="权限名称：" prop="name">
-            <el-input ref="refFocus" v-model.trim="dataJson.tempJson.name" clearable show-word-limit :maxlength="dataJson.inputSettings.maxLength.name" :disabled="isUpdateModel" :placeholder="isPlaceholderShow('请输入')" />
+            <el-input ref="refFocus" v-model.trim="dataJson.tempJson.name" clearable show-word-limit :maxlength="dataJson.inputSettings.maxLength.name" :disabled="isViewModel" :placeholder="isPlaceholderShow('请输入')" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -252,7 +252,7 @@ export default {
       this.settings.btnShowStatus.showCopyInsert = true
       // 控件focus
       this.$nextTick(() => {
-        this.$refs['refFocusTwo'].focus()
+        this.$refs['refFocus'].focus()
       })
     },
     // 修改时的初始化
@@ -264,7 +264,7 @@ export default {
       this.settings.btnShowStatus.showUpdate = true
       // 控件focus
       this.$nextTick(() => {
-        this.$refs['refFocusTwo'].focus()
+        this.$refs['refFocus'].focus()
       })
     },
     // 查看时的初始化
@@ -321,7 +321,7 @@ export default {
           this.dataJson.tempJson.code = ''
           // 设置控件焦点focus
           this.$nextTick(() => {
-            this.$refs['refFocusTwo'].focus()
+            this.$refs['refFocus'].focus()
           })
           break
         default:
