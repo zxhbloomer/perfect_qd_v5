@@ -15,40 +15,18 @@
       class="floatRight"
     >
       <el-form-item label="">
-        <el-input v-model.trim="dataJson.searchForm.code" clearable placeholder="集团编号" />
+        <el-input v-model.trim="dataJson.searchForm.name" clearable placeholder="权限名称" />
       </el-form-item>
       <el-form-item label="">
-        <el-input v-model.trim="dataJson.searchForm.name" clearable placeholder="集团名称" />
+        <delete-type-normal v-model="dataJson.searchForm.is_del" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain icon="el-icon-search" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button v-popover:popover type="primary" plain icon="el-icon-zoom-in">高级查询</el-button>
+        <el-button type="primary" plain icon="perfect-icon-reset" @click="handleResetSearch">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-popover
-      ref="popover"
-      placement="top"
-      width="420"
-      title="高级查询"
-      popper-class="perfect_popper"
-    >
-      <el-form
-        :inline="true"
-        :model="dataJson.searchForm"
-        label-position="getLabelPosition()"
-      >
-        <el-form-item label="">
-          <delete-type-normal v-model="dataJson.searchForm.is_del" />
-        </el-form-item>
-        <el-divider />
-        <div style="text-align: right; margin: 0">
-          <el-button type="text" @click="doResetSearch()">重置</el-button>
-          <el-button type="primary" @click="handleSearch">提交</el-button>
-        </div>
-      </el-form>
-    </el-popover>
 
     <el-button-group>
       <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="settings.loading" @click="handleInsert">新增</el-button>
@@ -71,7 +49,6 @@
       :default-sort="{prop: 'u_time', order: 'descending'}"
       style="width: 100%"
       @row-click="handleRowClick"
-      @row-dblclick="handleRowDbClick"
       @current-change="handleCurrentChange"
       @sort-change="handleSortChange"
       @selection-change="handleSelectionChange"
@@ -146,28 +123,9 @@
   .floatLeft {
     float: left;
   }
-  .el-form-item .el-select {
-    width: 100%;
-  }
-  .grid-content {
-    border-radius: 2px;
-    min-height: 36px;
-    margin-bottom: 10px;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-</style>
-<style >
-  .el-input-group__append_select{
+  .el-alert--success.is-dark {
+    background-color: #448aca;
     color: #FFFFFF;
-    background-color: #1890ff;
-    border-color: #1890ff;
-  }
-  .el-input-group__append_reset{
-    color: #FFFFFF;
-    background-color: #F56C6C;
-    border-color: #F56C6C;
   }
 </style>
 
@@ -208,22 +166,12 @@ export default {
           pageCondition: deepCopy(this.PARAMETERS.PAGE_CONDITION),
           // 查询条件
           name: '',
-          code: '',
-          visible: 'null',
           is_del: '0' // 未删除
         },
         // 分页控件的json
         paging: deepCopy(this.PARAMETERS.PAGE_JSON),
         // table使用的json
         listData: null,
-        // 单条数据 json的，初始化原始数据
-        tempJsonOriginal: {
-          id: undefined,
-          name: '',
-          code: '',
-          descr: '',
-          dbversion: 0
-        },
         // 单条数据 json
         currentJson: null,
         // 当前表格中的索引，第几条
@@ -240,7 +188,7 @@ export default {
           showExport: false
         },
         // loading 状态
-        listLoading: true,
+        loading: true,
         duration: 4000
       }
     }
@@ -292,8 +240,6 @@ export default {
     initShow() {
       // 初始化查询
       this.getDataList()
-      // 数据初始化
-      this.dataJson.tempJson = Object.assign({}, this.dataJson.tempJsonOriginal)
     },
     // 下拉选项控件事件
     handleSelectChange(val) {
@@ -305,16 +251,7 @@ export default {
     },
     // 行点击
     handleRowClick(row) {
-      this.dataJson.tempJson = Object.assign({}, row) // copy obj
       this.dataJson.rowIndex = this.getRowIndex(row)
-    },
-    // 行双点击，仅在dialog中有效
-    handleRowDbClick(row) {
-      this.dataJson.tempJson = Object.assign({}, row) // copy obj
-      this.dataJson.rowIndex = this.getRowIndex(row)
-      if (this.meDialogSetting.dialogStatus) {
-        this.$emit('rowDbClick', this.dataJson.tempJson)
-      }
     },
     handleSearch() {
       // 查询
@@ -324,44 +261,39 @@ export default {
       // 清空选择
       this.dataJson.multipleSelection = []
       this.$refs.multipleTable.clearSelection()
-      this.dataJson.currentJson.id = undefined
     },
     handleRowUpdate(row, _rowIndex) {
-      // 修改
-      this.dataJson.tempJson = Object.assign({}, row) // copy obj
       this.dataJson.rowIndex = _rowIndex
-      this.popSettingsData.dialogStatus = this.PARAMETERS.STATUS_UPDATE
-      this.popSettingsData.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataSubmitForm'].clearValidate()
-      })
     },
     handleCurrentChange(row) {
       this.dataJson.currentJson = Object.assign({}, row) // copy obj
       this.dataJson.currentJson.index = this.getRowIndex(row)
-      this.dataJson.tempJsonOriginal = Object.assign({}, row) // copy obj
-
       // 设置dialog的返回
       this.$store.dispatch('popUpSearchDialog/selectedDataJson', Object.assign({}, row))
+    },
+    // 重置查询区域
+    handleResetSearch() {
+      this.dataJson.searchForm = this.$options.data.call(this).dataJson.searchForm
     },
     getDataList(val) {
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING)
       this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING)
+
+      this.dataJson.searchForm.pageCondition.current = this.dataJson.paging.current
+      this.dataJson.searchForm.pageCondition.size = this.dataJson.paging.size
+
       // 查询逻辑
-      this.settings.listLoading = true
-      this.dataJson.searchForm = Object.assign({}, val)
+      this.settings.loading = true
       getListApi(this.dataJson.searchForm).then(response => {
-        const recorders = response.data
-        const newRecorders = recorders.map(v => {
-          return { ...v, columnTypeShowIcon: false, columnNameShowIcon: false }
-        })
-        this.dataJson.listData = newRecorders
+        this.dataJson.listData = response.data.records
+        this.dataJson.paging = response.data
+        this.dataJson.paging.records = {}
         // 通知兄弟组件
         this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
         this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
       }).finally(() => {
-        this.settings.listLoading = false
+        this.settings.loading = false
       })
     },
     // 获取row-key
