@@ -429,8 +429,8 @@ export default {
       this.dataJson.currentJson = this.$refs.treeObject.getCurrentNode()
       this.dataJson.currentJson.currentkey = this.$refs.treeObject.getCurrentKey()
       // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_ORG_CHANGE)
-      this.$emit(this.EMITS.EMIT_ORG_CHANGE, row)
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE, row)
     },
     // 兄弟组件发过来的调用请求
     handleDataChange() {
