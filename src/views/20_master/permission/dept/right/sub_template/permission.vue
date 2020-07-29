@@ -65,10 +65,10 @@
           <span>{{ (dataJson.searchForm.pageCondition.current - 1) * dataJson.searchForm.pageCondition.size + scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="!meDialogStatus" header-align="center" show-overflow-tooltip sortable="custom" min-width="130" :sort-orders="settings.sortOrders" prop="parent_group_simple_name" label="上级集团" />
-      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="name" label="集团名称" />
-      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="140" :sort-orders="settings.sortOrders" prop="simple_name" label="集团简称" />
-      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="130" :sort-orders="settings.sortOrders" prop="code" label="集团编号" />
+      <el-table-column v-if="!meDialogStatus" header-align="center" show-overflow-tooltip sortable="custom" min-width="130" :sort-orders="settings.sortOrders" prop="name" label="权限名称" />
+      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="150" :sort-orders="settings.sortOrders" prop="status" label="使用状态" />
+      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="140" :sort-orders="settings.sortOrders" prop="descr" label="说明" />
+      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="130" :sort-orders="settings.sortOrders" prop="oper" label="操作权限设置" />
       <!-- <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="descr" label="说明" /> -->
       <el-table-column header-align="center" min-width="60" :sort-orders="settings.sortOrders" label="删除">
         <template v-slot:header>
@@ -112,6 +112,16 @@
     </el-table>
     <pagination ref="minusPaging" :total="dataJson.paging.total" :page.sync="dataJson.paging.current" :limit.sync="dataJson.paging.size" @pagination="getDataList" />
 
+    <edit-dialog
+      v-if="popSettings.one.visible"
+      :id="popSettings.one.props.id"
+      :data="popSettings.one.props.data"
+      :visible="popSettings.one.visible"
+      :dialog-status="popSettings.one.props.dialogStatus"
+      @closeMeOk="handleCloseDialogOneOk"
+      @closeMeCancel="handleCloseDialogOneCancel"
+    />
+
     <iframe id="refIframe" ref="refIframe" scrolling="no" frameborder="0" style="display:none" name="refIframe">x</iframe>
   </div>
 </template>
@@ -136,9 +146,10 @@ import { getListApi } from '@/api/20_master/permission/dept/permission'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
+import editDialog from '../sub_template/dialog/permission_edit'
 
 export default {
-  components: { Pagination, DeleteTypeNormal },
+  components: { Pagination, DeleteTypeNormal, editDialog },
   directives: { elDragDialog },
   mixins: [],
   props: {
@@ -190,6 +201,17 @@ export default {
         // loading 状态
         loading: true,
         duration: 4000
+      },
+      popSettings: {
+        // 弹出编辑页面
+        one: {
+          visible: false,
+          props: {
+            id: undefined,
+            data: {},
+            dialogStatus: ''
+          }
+        }
       }
     }
   },
@@ -334,18 +356,129 @@ export default {
       }
       this.getDataList()
     },
+    // 点击按钮 新增
     handleInsert() {
-
+      // 新增
+      this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_INSERT
+      this.popSettings.one.visible = true
     },
-    handleUpdate() {
-
-    },
+    // 点击按钮 复制新增
     handleCopyInsert() {
-
+      this.popSettings.one.props.data = Object.assign({}, this.dataJson.currentJson)
+      // 复制新增
+      this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_COPY_INSERT
+      this.popSettings.one.visible = true
     },
+    // 点击按钮 更新
+    handleUpdate() {
+      this.popSettings.one.props.data = Object.assign({}, this.dataJson.currentJson)
+      if (this.popSettings.one.props.data.id === undefined) {
+        this.showErrorMsg('请选择一条数据')
+        return
+      }
+      // 更新
+      this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_UPDATE
+      this.popSettings.one.visible = true
+    },
+    // 查看
     handleView() {
+      this.popSettings.one.props.data = Object.assign({}, this.dataJson.currentJson)
+      if (this.popSettings.one.props.data.id === undefined) {
+        this.showErrorMsg('请选择一条数据')
+        return
+      }
+      this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_VIEW
+      this.popSettings.one.visible = true
+    },
+    // ------------------编辑弹出框 start--------------------
+    handleCloseDialogOneOk(val) {
+      switch (this.popSettings.one.props.dialogStatus) {
+        case this.PARAMETERS.STATUS_INSERT:
+          this.doInsertModelCallBack(val)
+          break
+        case this.PARAMETERS.STATUS_UPDATE:
+          this.doUpdateModelCallBack(val)
+          break
+        case this.PARAMETERS.STATUS_COPY_INSERT:
+          this.doCopyInsertModelCallBack(val)
+          break
+        case this.PARAMETERS.STATUS_VIEW:
+          break
+      }
+    },
+    handleCloseDialogOneCancel() {
+      this.popSettings.one.visible = false
+    },
+    // 处理插入回调
+    doInsertModelCallBack(val) {
+      if (val.return_flag) {
+        this.popSettings.one.visible = false
 
+        // 设置到table中绑定的json数据源
+        this.dataJson.listData.push(val.data.data)
+        this.$notify({
+          title: '新增处理成功',
+          message: val.data.message,
+          type: 'success',
+          duration: this.settings.duration
+        })
+      } else {
+        this.$notify({
+          title: '新增处理失败',
+          message: val.error.message,
+          type: 'error',
+          duration: this.settings.duration
+        })
+      }
+    },
+    // 处理复制新增回调
+    doCopyInsertModelCallBack(val) {
+      if (val.return_flag) {
+        this.popSettings.one.visible = false
+        // 设置到table中绑定的json数据源
+        this.dataJson.listData.push(val.data.data)
+        // 设置到currentjson中
+        this.dataJson.currentJson = Object.assign({}, val.data.data)
+        this.$notify({
+          title: '复制新增处理成功',
+          message: val.data.message,
+          type: 'success',
+          duration: this.settings.duration
+        })
+      } else {
+        this.$notify({
+          title: '复制新增处理失败',
+          message: val.error.message,
+          type: 'error',
+          duration: this.settings.duration
+        })
+      }
+    },
+    // 处理更新回调
+    doUpdateModelCallBack(val) {
+      if (val.return_flag) {
+        this.popSettings.one.visible = false
+
+        // 设置到table中绑定的json数据源
+        this.dataJson.listData.splice(this.dataJson.rowIndex, 1, val.data.data)
+        // 设置到currentjson中
+        this.dataJson.currentJson = Object.assign({}, val.data.data)
+        this.$notify({
+          title: '更新处理成功',
+          message: val.data.message,
+          type: 'success',
+          duration: this.settings.duration
+        })
+      } else {
+        this.$notify({
+          title: '更新处理失败',
+          message: val.error.message,
+          type: 'error',
+          duration: this.settings.duration
+        })
+      }
     }
+    // ------------------编辑弹出框 end--------------------
 
   }
 }
