@@ -41,6 +41,38 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="删除状态：" prop="is_del">
+            <div class="switch">
+              <el-switch
+                v-model="dataJson.tempJson.is_del"
+                active-color="#ff4949"
+                inactive-color="#13ce66"
+                :active-value="true"
+                :inactive-value="false"
+                active-text="是"
+                inactive-text="否"
+              />
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="启用状态：" prop="is_enable">
+            <div class="switch">
+              <el-switch
+                v-model="dataJson.tempJson.is_enable"
+                active-color="#ff4949"
+                inactive-color="#13ce66"
+                :active-value="true"
+                :inactive-value="false"
+                active-text="是"
+                inactive-text="否"
+              />
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item label="说明：" prop="descr">
         <el-input v-model.trim="dataJson.tempJson.descr" clearable type="textarea" show-word-limit :maxlength="dataJson.inputSettings.maxLength.descr" :disabled="isViewModel" :placeholder="isPlaceholderShow('请输入')" />
       </el-form-item>
@@ -71,6 +103,26 @@
 </template>
 
 <style scoped>
+  .switch ::v-deep .el-switch__label   {
+    position: absolute;
+    display: none;
+    color: #fff;
+  }
+
+  /*打开时文字位置设置*/
+  .switch ::v-deep .el-switch__label--right    {
+    z-index: 1;
+    right: 19px;
+  }
+  /*关闭时文字位置设置*/
+  .switch ::v-deep .el-switch__label--left    {
+    z-index: 1;
+    left: 19px;
+  }
+  /*显示文字*/
+  .switch ::v-deep .el-switch__label.is-active   {
+    display: block;
+  }
   .floatRight {
     float: right;
   }
@@ -357,6 +409,7 @@ export default {
           }, (_error) => {
             this.$emit('closeMeOk', { return_flag: false, error: _error })
           }).finally(() => {
+            this.doCallBackLeft()
             this.settings.loading = false
           })
         }
@@ -376,6 +429,7 @@ export default {
           }, (_error) => {
             this.$emit('closeMeOk', { return_flag: false, error: _error })
           }).finally(() => {
+            this.doCallBackLeft()
             this.settings.loading = false
           })
         }
@@ -395,10 +449,16 @@ export default {
           }, (_error) => {
             this.$emit('closeMeOk', { return_flag: false, error: _error })
           }).finally(() => {
+            this.doCallBackLeft()
             this.settings.loading = false
           })
         }
       })
+    },
+    doCallBackLeft() {
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LEFT)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LEFT)
     }
   }
 }

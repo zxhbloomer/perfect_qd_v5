@@ -89,40 +89,47 @@
         </template>
 
         <template v-slot="scope">
-          删除：
-          <el-tooltip :content="scope.row.is_del === 'false' ? '删除状态：已删除' : '删除状态：未删除' " placement="top" :open-delay="500">
-            <el-switch
-              v-model="scope.row.is_del"
-              active-color="#ff4949"
-              inactive-color="#13ce66"
-              :active-value="true"
-              :inactive-value="false"
-              :width="36"
-              :disabled="meDialogStatus"
-              active-text="是"
-              inactive-text="否"
-              @change="handleDel(scope.row)"
-            />
-          </el-tooltip>
-          <br>
-          启用：
-          <el-tooltip :content="scope.row.is_enable === 'false' ? '启用状态：已启用' : '启用状态：未启用' " placement="top" :open-delay="500">
-            <el-switch
-              v-model="scope.row.is_enable"
-              active-color="#ff4949"
-              inactive-color="#13ce66"
-              :active-value="true"
-              :inactive-value="false"
-              :width="36"
-              :disabled="meDialogStatus"
-              active-text="是"
-              inactive-text="否"
-              @change="handleEnable(scope.row)"
-            />
-          </el-tooltip>
+          <div class="switch">
+            删除：
+            <el-tooltip :content="scope.row.is_del === 'false' ? '删除状态：已删除' : '删除状态：未删除' " placement="top" :open-delay="500">
+              <el-switch
+                v-model="scope.row.is_del"
+                active-color="#ff4949"
+                inactive-color="#13ce66"
+                :active-value="true"
+                :inactive-value="false"
+                :disabled="meDialogStatus"
+                active-text="是"
+                inactive-text="否"
+                @change="handleDel(scope.row)"
+              />
+            </el-tooltip>
+            <br>
+            启用：
+            <el-tooltip :content="scope.row.is_enable === 'false' ? '启用状态：已启用' : '启用状态：未启用' " placement="top" :open-delay="500">
+              <el-switch
+                v-model="scope.row.is_enable"
+                active-color="#ff4949"
+                inactive-color="#13ce66"
+                :active-value="true"
+                :inactive-value="false"
+                :disabled="meDialogStatus"
+                active-text="是"
+                inactive-text="否"
+                @change="handleEnable(scope.row)"
+              />
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="130" :sort-orders="settings.sortOrders" prop="oper" label="操作权限设置" />
+      <el-table-column header-align="center" show-overflow-tooltip min-width="100" prop="oper" label="权限操作">
+        <template v-slot="scope">
+          <el-button-group>
+            <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)">设置</el-button>
+            <el-button type="info" icon="el-icon-search" @click="handleEdit(scope.row)">查看</el-button>
+          </el-button-group>
+        </template>
+      </el-table-column>
       <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="100" :sort-orders="settings.sortOrders" prop="u_name" label="更新人" />
       <el-table-column header-align="center" show-overflow-tooltip sortable="custom" min-width="180" :sort-orders="settings.sortOrders" prop="u_time" label="更新时间">
         <template v-slot="scope">
@@ -147,29 +154,27 @@
 </template>
 
 <style scoped>
-  ::v-deep .el-switch__label   {
+  .switch ::v-deep .el-switch__label   {
     position: absolute;
     display: none;
     color: #fff;
   }
 
-/*打开时文字位置设置*/
-  ::v-deep .el-switch__label--right    {
+  /*打开时文字位置设置*/
+  .switch ::v-deep .el-switch__label--right    {
     z-index: 1;
     right: 19px;
   }
   /*关闭时文字位置设置*/
-  ::v-deep .el-switch__label--left    {
+  .switch ::v-deep .el-switch__label--left    {
     z-index: 1;
     left: 19px;
   }
   /*显示文字*/
-  ::v-deep .el-switch__label.is-active   {
+  .switch ::v-deep .el-switch__label.is-active   {
     display: block;
   }
-</style>
 
-<style scoped>
   .floatRight {
     float: right;
   }
