@@ -106,9 +106,9 @@
           </el-tooltip>
           <br>
           启用：
-          <el-tooltip :content="scope.row.is_del === 'false' ? '启用状态：已删除' : '启用状态：未删除' " placement="top" :open-delay="500">
+          <el-tooltip :content="scope.row.is_enable === 'false' ? '启用状态：已启用' : '启用状态：未启用' " placement="top" :open-delay="500">
             <el-switch
-              v-model="scope.row.is_del"
+              v-model="scope.row.is_enable"
               active-color="#ff4949"
               inactive-color="#13ce66"
               :active-value="true"
@@ -117,7 +117,7 @@
               :disabled="meDialogStatus"
               active-text="是"
               inactive-text="否"
-              @change="handleDel(scope.row)"
+              @change="handleEnable(scope.row)"
             />
           </el-tooltip>
         </template>
@@ -182,7 +182,7 @@
 <script>
 import '@/styles/org_png.scss'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { getListApi } from '@/api/20_master/permission/dept/permission'
+import { getListApi, deleteApi, enableApi } from '@/api/20_master/permission/dept/permission'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
@@ -314,8 +314,7 @@ export default {
   },
   methods: {
     initShow() {
-      // 初始化查询
-      // this.getDataList()
+      this.dataJson.searchForm.is_del = this.CONSTANTS.DICT_SYS_DELETE_MAP_ALL
     },
     // 下拉选项控件事件
     handleSelectChange(val) {
@@ -457,6 +456,88 @@ export default {
       }
       this.popSettings.one.props.dialogStatus = this.PARAMETERS.STATUS_VIEW
       this.popSettings.one.visible = true
+    },
+    // 删除操作
+    handleDel(row) {
+      let _message = ''
+      const _value = row.is_del
+      const selectionJson = []
+      selectionJson.push({ 'id': row.id })
+      if (_value === true) {
+        _message = '是否要删除选择的数据？'
+      } else {
+        _message = '是否要复原该条数据？'
+      }
+      // 选择全部的时候
+      this.$confirm(_message, '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(() => {
+        // loading
+        this.settings.loading = true
+        deleteApi(selectionJson).then((_data) => {
+          this.$notify({
+            title: '更新处理成功',
+            message: _data.message,
+            type: 'success',
+            duration: this.settings.duration
+          })
+        }, (_error) => {
+          this.$notify({
+            title: '更新处理失败',
+            message: _error.message,
+            type: 'error',
+            duration: this.settings.duration
+          })
+          row.is_del = !row.is_del
+        }).finally(() => {
+          this.popSettings.dialogFormVisible = false
+          this.settings.loading = false
+        })
+      }).catch(action => {
+        row.is_del = !row.is_del
+      })
+    },
+    // 启用禁用操作
+    handleEnable(row) {
+      let _message = ''
+      const _value = row.is_enable
+      if (_value === true) {
+        _message = '是否要禁用选择的数据？'
+      } else {
+        _message = '是否要启用该条数据？'
+      }
+      // 选择全部的时候
+      this.$confirm(_message, '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(() => {
+        // loading
+        this.settings.loading = true
+        enableApi({ 'id': row.id }).then((_data) => {
+          this.$notify({
+            title: '更新处理成功',
+            message: _data.message,
+            type: 'success',
+            duration: this.settings.duration
+          })
+        }, (_error) => {
+          this.$notify({
+            title: '更新处理失败',
+            message: _error.message,
+            type: 'error',
+            duration: this.settings.duration
+          })
+          row.is_enable = !row.is_enable
+        }).finally(() => {
+          this.popSettings.dialogFormVisible = false
+          this.settings.loading = false
+        })
+      }).catch(action => {
+        row.is_enable = !row.is_enable
+      })
     },
     // ------------------编辑弹出框 start--------------------
     handleCloseDialogOneOk(val) {

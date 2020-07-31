@@ -76,6 +76,12 @@ const DICT_MSTR_PERMISSION_TYPE_USER = '30'
 /** 排除权限  */
 const DICT_MSTR_PERMISSION_TYPE_OUT = '40'
 
+/** 删除类型：0：未删除 1：已删除  */
+const DICT_SYS_DELETE_MAP = 'mstr_permission_type'
+const DICT_SYS_DELETE_MAP_YES = '1'
+const DICT_SYS_DELETE_MAP_NO = '0'
+const DICT_SYS_DELETE_MAP_ALL = 'null'
+
 export default {
   /** 隐藏显示类型： 0：显示 1：隐藏 null:全部 */
   DICT_SYS_VISIBLE_TYPE,
@@ -143,5 +149,10 @@ export default {
   /** 用户权限  */
   DICT_MSTR_PERMISSION_TYPE_USER,
   /** 排除权限  */
-  DICT_MSTR_PERMISSION_TYPE_OUT
+  DICT_MSTR_PERMISSION_TYPE_OUT,
+  /** 删除类型：0：未删除 1：已删除  */
+  DICT_SYS_DELETE_MAP,
+  DICT_SYS_DELETE_MAP_YES,
+  DICT_SYS_DELETE_MAP_NO,
+  DICT_SYS_DELETE_MAP_ALL
 }

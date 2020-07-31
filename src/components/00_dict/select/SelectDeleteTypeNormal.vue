@@ -1,7 +1,7 @@
 <template>
   <el-select
     placeholder="请选择删除状态"
-    :loading="dataJson.settings.listLoading"
+    :loading="dataJson.settings.loading"
     loading-text="拼命加载..."
     clearable
     :value="value"
@@ -36,7 +36,7 @@ export default {
         settings: {
           // 页面设置json
           // loading 状态
-          listLoading: true
+          loading: true
         }
 
       }
@@ -57,13 +57,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.dataJson.settings.listLoading = true
+      this.dataJson.settings.loading = true
       this.getRemoteData()
     },
     getRemoteData() {
       getDeleteTypeNormalApi().then((_data) => {
         this.dataJson.selectOptions = _data.data
-        this.dataJson.settings.listLoading = false
+        this.dataJson.settings.loading = false
       }, (_error) => {
       })
     }
