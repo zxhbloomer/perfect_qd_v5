@@ -122,7 +122,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="100" prop="oper" label="权限操作">
+      <el-table-column header-align="center" show-overflow-tooltip min-width="110" prop="oper" label="权限操作">
         <template v-slot="scope">
           <el-button-group>
             <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)">设置</el-button>
