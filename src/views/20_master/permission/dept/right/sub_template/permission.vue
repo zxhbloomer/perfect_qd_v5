@@ -125,7 +125,7 @@
       <el-table-column header-align="center" show-overflow-tooltip min-width="110" prop="oper" label="权限操作">
         <template v-slot="scope">
           <el-button-group>
-            <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)">设置</el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="handleSetUpOperation(scope.row)">设置</el-button>
             <el-button type="info" icon="el-icon-search" @click="handleEdit(scope.row)">查看</el-button>
           </el-button-group>
         </template>
@@ -147,6 +147,15 @@
       :dialog-status="popSettings.one.props.dialogStatus"
       @closeMeOk="handleCloseDialogOneOk"
       @closeMeCancel="handleCloseDialogOneCancel"
+    />
+
+    <operate-step-one-dialog
+      v-if="popSettings.two.visible"
+      :visible="popSettings.two.visible"
+      :dialog-status="popSettings.two.props.dialogStatus"
+      :data="popSettings.two.props.data"
+      @closeMeOk="handleOperateStepOneDialogCloseMeOk"
+      @closeMeCancel="handleOperateStepOneDialogCloseMeCancel"
     />
 
     <iframe id="refIframe" ref="refIframe" scrolling="no" frameborder="0" style="display:none" name="refIframe">x</iframe>
@@ -192,9 +201,10 @@ import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
 import editDialog from '../sub_template/dialog/permission_edit'
+import operateStepOneDialog from '../sub_template/dialog/operate_step_one'
 
 export default {
-  components: { Pagination, DeleteTypeNormal, editDialog },
+  components: { Pagination, DeleteTypeNormal, editDialog, operateStepOneDialog },
   directives: { elDragDialog },
   mixins: [],
   props: {
@@ -251,6 +261,14 @@ export default {
       popSettings: {
         // 弹出编辑页面
         one: {
+          visible: false,
+          props: {
+            id: undefined,
+            data: {},
+            dialogStatus: ''
+          }
+        },
+        two: {
           visible: false,
           props: {
             id: undefined,
@@ -631,9 +649,24 @@ export default {
           duration: this.settings.duration
         })
       }
-    }
+    },
     // ------------------编辑弹出框 end--------------------
-
+    // -----------------选择根目录 start------------------
+    handleSetUpOperation(val) {
+      this.popSettings.five.props.data = this.dataJson.listData
+      this.popSettings.five.visible = true
+    },
+    handleOperateStepOneDialogCloseMeOk(val) {
+      this.popSettings.five.visible = false
+      // 打开菜单排序 dialog
+      const _data = [val]
+      this.popSettings.four.props.data = _data
+      this.popSettings.four.visible = true
+    },
+    handleOperateStepOneDialogCloseMeCancel() {
+      this.popSettings.five.visible = false
+    }
+    // -----------------选择根目录 end------------------
   }
 }
 </script>
