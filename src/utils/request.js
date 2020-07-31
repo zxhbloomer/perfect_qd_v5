@@ -78,6 +78,9 @@ service.interceptors.response.use(
       }
       // upd by zxh
       // return Promise.reject(new Error(res.message || 'Error'))
+      // sessionstorage清空401错误
+      sessionStorage.removeItem('ERROR_401')
+
       return Promise.resolve(res)
     } else {
       return res

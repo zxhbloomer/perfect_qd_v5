@@ -39,7 +39,12 @@
             <svg-icon v-else-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_POSITION" icon-class="perfect-icon-position" class="el-icon--right" />
             {{ data.simple_name }}
             <el-link v-if="data.type === CONSTANTS.DICT_ORG_SETTING_TYPE_DEPT" type="danger" style="vertical-align:top">
-              (0)
+              <span v-if="data.dept_permission_count">
+                ({{ data.dept_permission_count }})
+              </span>
+              <span v-else>
+                (0)
+              </span>
             </el-link>
           </span>
           <!-- <span>[{{ data.type_text }}]</span> -->
