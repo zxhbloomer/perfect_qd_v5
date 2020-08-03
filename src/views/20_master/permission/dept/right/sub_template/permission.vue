@@ -653,18 +653,14 @@ export default {
     // ------------------编辑弹出框 end--------------------
     // -----------------选择根目录 start------------------
     handleSetUpOperation(val) {
-      this.popSettings.five.props.data = this.dataJson.listData
-      this.popSettings.five.visible = true
+      this.popSettings.two.props.data = this.dataJson.listData
+      this.popSettings.two.visible = true
     },
     handleOperateStepOneDialogCloseMeOk(val) {
-      this.popSettings.five.visible = false
-      // 打开菜单排序 dialog
-      const _data = [val]
-      this.popSettings.four.props.data = _data
-      this.popSettings.four.visible = true
+      this.popSettings.two.visible = false
     },
     handleOperateStepOneDialogCloseMeCancel() {
-      this.popSettings.five.visible = false
+      this.popSettings.two.visible = false
     }
     // -----------------选择根目录 end------------------
   }

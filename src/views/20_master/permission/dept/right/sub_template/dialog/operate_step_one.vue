@@ -66,6 +66,7 @@
 <script>
 import constants_para from '@/common/constants/constants_para'
 import elDragDialog from '@/directive/el-drag-dialog'
+import { getSystemMenuRootListApi } from '@/api/20_master/permission/dept/permission'
 
 export default {
   components: { },
@@ -112,7 +113,7 @@ export default {
         // loading 状态
         loading: true,
         dialogStatus: this.dialogStatus,
-        textMap: '操作权限设置—第一步：请选择菜单组',
+        textMap: '操作权限设置第一步：请选择菜单组',
         // 按钮是否显示，默认不显示，false：不显示，true：显示
         btnShowStatus: {
           showInsert: false,
@@ -225,6 +226,14 @@ export default {
       if (this.watch.unwatch_tempJson) {
         this.watch.unwatch_tempJson()
       }
+    },
+    getDataList() {
+      getSystemMenuRootListApi().then(response => {
+        this.dataJson.listData = response.data.records
+        debugger
+      }).finally(() => {
+        this.settings.loading = false
+      })
     }
   }
 }

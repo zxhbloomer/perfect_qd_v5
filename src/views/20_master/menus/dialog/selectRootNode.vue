@@ -96,11 +96,6 @@ export default {
         unwatch_tempJson: null
       },
       dataJson: {// 单条数据 json的，初始化原始数据
-        // 级联选择器数据
-        cascader: {
-          data: null,
-          value: ''
-        },
         // 单条数据 json
         tempJson: null,
         inputSettings: {

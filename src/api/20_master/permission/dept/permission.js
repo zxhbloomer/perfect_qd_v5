@@ -97,3 +97,15 @@ export function enableApi(data) {
     data
   })
 }
+
+/**
+   * 部门权限表数据获取系统菜单根节点
+   * @param {*} data
+   */
+export function getSystemMenuRootListApi(data) {
+  return request({
+    url: '/api/v1/permission/dept/get_sys_menu_root_node',
+    method: 'post',
+    data
+  })
+}
