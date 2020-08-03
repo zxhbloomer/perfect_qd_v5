@@ -105,7 +105,6 @@ export function enableApi(data) {
 export function getSystemMenuRootListApi(data) {
   return request({
     url: '/api/v1/permission/dept/get_sys_menu_root_node',
-    method: 'post',
-    data
+    method: 'post'
   })
 }

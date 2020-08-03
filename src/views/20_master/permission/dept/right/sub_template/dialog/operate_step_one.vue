@@ -33,7 +33,7 @@
           >
             <el-select ref="refFocus" v-model="dataJson.tempJson" placeholder="请选择">
               <el-option
-                v-for="item in data"
+                v-for="item in dataJson.select_data"
                 :key="item.id"
                 :label="item.label"
                 :value="item"
@@ -77,14 +77,6 @@ export default {
       type: Boolean,
       default: false
     },
-    id: {
-      type: Number,
-      default: null
-    },
-    data: {
-      type: Array,
-      default: null
-    },
     dialogStatus: {
       type: String,
       default: constants_para.STATUS_VIEW
@@ -97,17 +89,10 @@ export default {
         unwatch_tempJson: null
       },
       dataJson: {// 单条数据 json的，初始化原始数据
-        // 级联选择器数据
-        cascader: {
-          data: null,
-          value: ''
-        },
         // 单条数据 json
         tempJson: null,
-        inputSettings: {
-          maxLength: {
-          }
-        }
+        // 下拉选项的数据
+        select_data: null
       },
       settings: {
         // loading 状态
@@ -166,6 +151,7 @@ export default {
   },
   created() {
     this.init()
+    this.getDataList()
   },
   mounted() {
   },
@@ -229,8 +215,8 @@ export default {
     },
     getDataList() {
       getSystemMenuRootListApi().then(response => {
-        this.dataJson.listData = response.data.records
-        debugger
+        this.dataJson.select_data = response.data.nodes
+        this.dataJson.tempJson = response.data.default_id
       }).finally(() => {
         this.settings.loading = false
       })
