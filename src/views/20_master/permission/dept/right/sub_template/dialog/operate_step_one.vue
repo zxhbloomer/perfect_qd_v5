@@ -194,7 +194,6 @@ export default {
     handleNext() {
       this.$refs['dataSubmitForm'].validate((valid) => {
         if (valid) {
-          debugger
           this.$emit('closeMeOk', this.dataJson.tempJson)
         } else {
           this.showErrorMsg('请选择菜单组!')
