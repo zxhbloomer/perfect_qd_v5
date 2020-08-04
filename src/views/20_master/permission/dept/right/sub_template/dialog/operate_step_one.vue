@@ -31,12 +31,12 @@
               { required: true, message: '请选择菜单组!'},
             ]"
           >
-            <el-select ref="refFocus" v-model="dataJson.tempJson" placeholder="请选择">
+            <el-select ref="refFocus" v-model="dataJson.tempJson.select" placeholder="请选择">
               <el-option
                 v-for="item in dataJson.select_data"
                 :key="item.id"
                 :label="item.label"
-                :value="item"
+                :value="item.value"
               />
             </el-select>
           </el-form-item>
@@ -90,7 +90,9 @@ export default {
       },
       dataJson: {// 单条数据 json的，初始化原始数据
         // 单条数据 json
-        tempJson: null,
+        tempJson: {
+          select: null
+        },
         // 下拉选项的数据
         select_data: null
       },
@@ -192,6 +194,7 @@ export default {
     handleNext() {
       this.$refs['dataSubmitForm'].validate((valid) => {
         if (valid) {
+          debugger
           this.$emit('closeMeOk', this.dataJson.tempJson)
         } else {
           this.showErrorMsg('请选择菜单组!')
@@ -216,7 +219,10 @@ export default {
     getDataList() {
       getSystemMenuRootListApi().then(response => {
         this.dataJson.select_data = response.data.nodes
-        this.dataJson.tempJson = response.data.default_id
+
+        this.$nextTick(() => {
+          this.dataJson.tempJson.select = response.data.default_node.value
+        })
       }).finally(() => {
         this.settings.loading = false
       })
