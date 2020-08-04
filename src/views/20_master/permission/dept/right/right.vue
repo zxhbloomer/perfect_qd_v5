@@ -7,7 +7,7 @@
       </el-tab-pane>
       <el-tab-pane name="group" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
         <template slot="label">xxxx</template>
-        <group-template :height="height - 42" />
+        <operation-template :height="height - 42" />
       </el-tab-pane>
     </el-tabs>
 
@@ -57,10 +57,10 @@
 <script>
 import elDragDialog from '@/directive/el-drag-dialog'
 import permissionTemplate from '../right/sub_template/permission'
-import groupTemplate from '@/views/20_master/org/right/sub_template/group'
+import operationTemplate from '../right/sub_template/operation'
 
 export default {
-  components: { permissionTemplate, groupTemplate },
+  components: { permissionTemplate, operationTemplate },
   directives: { elDragDialog },
   props: {
     height: {
