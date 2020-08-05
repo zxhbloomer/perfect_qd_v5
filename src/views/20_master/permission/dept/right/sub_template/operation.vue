@@ -18,16 +18,15 @@
       row-key="id"
       @row-click="handleRowClick"
       @current-change="handleCurrentChange"
-      @selection-change="handleSelectionChange"
     >
       <el-table-column header-align="center" type="index" width="45" fixed />
-      <el-table-column header-align="center" show-overflow-tooltip min-width="250" prop="name" label="菜单名称" fixed>
+      <el-table-column header-align="center" show-overflow-tooltip min-width="120" prop="name" label="菜单名称" fixed>
         <template v-slot="scope">
           <svg-icon v-if="scope.row.meta_icon" :icon-class="scope.row.meta_icon" :class="scope.row.meta_icon" />
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="160" prop="type_name" label="类型" fixed>
+      <el-table-column header-align="center" show-overflow-tooltip min-width="50" prop="type_name" label="类型" fixed>
         <template v-slot="scope">
           <span class="menu_png">
             <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_ROOT" class="root">根结点</em>
@@ -38,11 +37,18 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="full_path" label="请求地址" fixed />
-      <!-- <el-table-column header-align="center" show-overflow-tooltip min-width="150" prop="code" label="菜单编号" /> -->
-      <!-- <el-table-column header-align="center" show-overflow-tooltip min-width="80" prop="type_name" label="菜单类型" /> -->
-      <el-table-column header-align="center" label="按钮">
-        <el-table-column
+      <el-table-column header-align="center" label="权限" min-width="260">
+        <template v-slot="operations">
+          <el-row>
+            <el-col v-for="item in operations.row.function_info" :key="item.code" :span="4">
+              <el-checkbox v-model="item.perms">{{ item.name }}</el-checkbox>
+            </el-col>
+          </el-row>
+          <!-- <span v-for="item in operations.row.function_info" :key="item.code">
+            <el-checkbox v-model="item.perms">{{ item.name }}</el-checkbox>
+          </span> -->
+        </template>
+        <!-- <el-table-column
           v-for="button_column in dataJson.menu_buttons"
           :key="button_column.code"
           align="center"
@@ -60,7 +66,12 @@
 
           </template>
           -
-        </el-table-column>
+        </el-table-column> -->
+      </el-table-column>
+      <el-table-column header-align="center" label="全选" min-width="30">
+        <template v-slot="scope">
+          <el-checkbox />
+        </template>
       </el-table-column>
     </el-table>
 
@@ -88,7 +99,10 @@
 </style>
 
 <script>
-import { getOperationListApi } from '@/api/20_master/permission/dept/permission'
+import '@/styles/menu_png.scss'
+import { getOperationListApi } from '@/api/20_master/permission/operation/operation'
+import deepCopy from 'deep-copy'
+
 export default {
   components: { },
   directives: { },
@@ -140,11 +154,23 @@ export default {
       // 初始化查询
       this.getDataList()
     },
+    // 行点击
+    handleRowClick(row) {
+      this.dataJson.rowIndex = this.getRowIndex(row)
+    },
+    handleCurrentChange(row) {
+      this.dataJson.currentJson = deepCopy(row) // copy obj
+      this.dataJson.currentJson.index = this.getRowIndex(row)
+    },
+    // 获取行索引
+    getRowIndex(row) {
+      const _index = this.dataJson.listData.lastIndexOf(row)
+      return _index
+    },
     getDataList() {
-      this.dataJson.searchForm.pageCondition.current = this.dataJson.paging.current
-      this.dataJson.searchForm.pageCondition.size = this.dataJson.paging.size
       // 查询逻辑
-      this.settings.listLoading = true
+      this.settings.loading = true
+      this.dataJson.searchForm.root_id = 89
       getOperationListApi(this.dataJson.searchForm).then(response => {
         // 增加对象属性，columnTypeShowIcon，columnNameShowIcon
         const recorders = response.data.menu_data
@@ -155,7 +181,7 @@ export default {
         this.dataJson.paging.records = {}
       }).finally(() => {
         this.dataJson.currentJson = undefined
-        this.settings.listLoading = false
+        this.settings.loading = false
         this.$refs.multipleTable.setCurrentRow()
       })
     }
