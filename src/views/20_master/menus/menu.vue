@@ -26,7 +26,7 @@
       <el-button :disabled="!settings.btnShowStatus.showAddSubNode" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleAddSubNode">添加子菜单-结点</el-button>
       <el-button :disabled="!settings.btnShowStatus.showAddSubMenu" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleAddSubMenu">添加子菜单-页面</el-button>
       <el-button :disabled="!settings.btnShowStatus.showUpdate" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleUpdate">修改</el-button>
-      <el-button type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleSort">调整顺序</el-button>
+      <el-button type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleSort">调整菜单顺序</el-button>
       <el-button :disabled="!settings.btnShowStatus.showRealyDelete" type="primary" icon="el-icon-circle-close" :loading="settings.listLoading" @click="handleRealyDelete">物理删除</el-button>
     </el-button-group>
     <el-table

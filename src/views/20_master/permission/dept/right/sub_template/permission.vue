@@ -2,7 +2,8 @@
   <div>
     <el-alert
       :title="dataJson.head.info"
-      type="success"
+      type="info"
+      show-icon
       effect="dark"
       :closable="false"
     />
@@ -163,6 +164,9 @@
 </template>
 
 <style scoped>
+  .el-alert--info.is-dark {
+    background-color: #448aca;
+  }
   .switch ::v-deep .el-switch__label   {
     position: absolute;
     display: none;
