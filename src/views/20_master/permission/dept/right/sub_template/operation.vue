@@ -8,26 +8,7 @@
       :closable="false"
     />
     <br>
-    <el-form
-      ref="minusForm"
-      :inline="true"
-      :model="dataJson.searchForm"
-      label-position="getLabelPosition()"
-      class="floatRight"
-      :disabled="!is_dept"
-    >
-      <el-form-item label="">
-        <el-input v-model.trim="dataJson.searchForm.name" clearable placeholder="权限名称" />
-      </el-form-item>
-      <el-form-item>
-        <el-button :disabled="!is_dept" type="primary" plain icon="perfect-icon-reset" @click="handleResetSearch">重新编辑权限</el-button>
-      </el-form-item>
-    </el-form>
 
-    <el-button-group>
-      <el-button type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleSort">编辑菜单</el-button>
-      <el-button type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleSort">调整菜单顺序</el-button>
-    </el-button-group>
     <el-table
       v-cloak
       ref="multipleTable"
