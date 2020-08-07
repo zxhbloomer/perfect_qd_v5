@@ -201,6 +201,7 @@
 import '@/styles/org_png.scss'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { getListApi, deleteApi, enableApi } from '@/api/20_master/permission/dept/permission'
+import { setSystemMenuData2PermissionDataApi } from '@/api/20_master/permission/operation/operation'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
@@ -661,6 +662,20 @@ export default {
       this.popSettings.two.visible = true
     },
     handleOperateStepOneDialogCloseMeOk(val) {
+      // 执行复制逻辑
+      this.settings.loading = true
+      setSystemMenuData2PermissionDataApi({ 'root_id': val.select }).then((_data) => {
+      }, (_error) => {
+        this.$notify({
+          title: '处理失败',
+          message: _error.message,
+          type: 'error',
+          duration: this.settings.duration
+        })
+      }).finally(() => {
+        this.settings.loading = false
+      })
+      // 关闭页面
       this.popSettings.two.visible = false
     },
     handleOperateStepOneDialogCloseMeCancel() {
