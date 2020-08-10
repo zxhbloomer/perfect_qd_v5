@@ -664,7 +664,7 @@ export default {
     handleOperateStepOneDialogCloseMeOk(val) {
       // 执行复制逻辑
       this.settings.loading = true
-      setSystemMenuData2PermissionDataApi({ 'root_id': val.select }).then((_data) => {
+      setSystemMenuData2PermissionDataApi({ 'permission_id': this.dataJson.currentJson.id, 'root_id': val.select }).then((_data) => {
       }, (_error) => {
         this.$notify({
           title: '处理失败',
