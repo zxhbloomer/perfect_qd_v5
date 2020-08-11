@@ -109,3 +109,14 @@ export function getSystemMenuRootListApi(data) {
   })
 }
 
+/**
+   * 判断是否已经选择过，默认菜单进行编辑
+   * @param {*} data
+   */
+export function isAlreadySetMenuIdApi(data) {
+  return request({
+    url: '/api/v1/permission/dept/setted',
+    method: 'post',
+    data
+  })
+}

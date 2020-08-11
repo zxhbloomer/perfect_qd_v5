@@ -200,7 +200,7 @@
 <script>
 import '@/styles/org_png.scss'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { getListApi, deleteApi, enableApi } from '@/api/20_master/permission/dept/permission'
+import { getListApi, deleteApi, enableApi, isAlreadySetMenuIdApi } from '@/api/20_master/permission/dept/permission'
 import { setSystemMenuData2PermissionDataApi } from '@/api/20_master/permission/operation/operation'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
@@ -658,9 +658,27 @@ export default {
     // ------------------编辑弹出框 end--------------------
     // -----------------选择根目录 start------------------
     handleSetUpOperation(val) {
-      this.popSettings.two.props.data = this.dataJson.listData
-      this.popSettings.two.visible = true
+      isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
+        if (response.data) {
+          // 已经设置
+          this.openPermissionEditTag()
+        } else {
+          // 未设置
+          this.popSettings.two.props.data = this.dataJson.listData
+          this.popSettings.two.visible = true
+        }
+        // 通知兄弟组件
+        // this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+        // this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+      }).finally(() => {
+        this.settings.loading = false
+      })
     },
+    // 打开权限编辑页面
+    openPermissionEditTag() {
+
+    },
+    // 页面关闭后操作
     handleOperateStepOneDialogCloseMeOk(val) {
       // 执行复制逻辑
       this.settings.loading = true
