@@ -5,8 +5,8 @@
         <template slot="label">权限列表</template>
         <permission-template :height="height - 142" />
       </el-tab-pane>
-      <el-tab-pane name="group" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
-        <template slot="label">xxxx</template>
+      <el-tab-pane v-if="dataJson.tab.show" name="group" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
+        <template slot="label">{{ dataJson.tab.name }}</template>
         <operation-template :height="height - 42" />
       </el-tab-pane>
     </el-tabs>
@@ -72,7 +72,11 @@ export default {
     return {
       dataJson: {
         // 左侧树的数据
-        leftTreeData: null
+        leftTreeData: null,
+        tab: {
+          show: false,
+          name: ''
+        }
       },
       // 页面设置json
       settings: {
@@ -92,6 +96,9 @@ export default {
     // 描绘完成
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE, _data => {
       this.dataJson.leftTreeData = _data
+    })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_TAB, _data => {
+      this.dataJson.tab = _data
     })
   },
   created() {

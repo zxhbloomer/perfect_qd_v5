@@ -661,22 +661,22 @@ export default {
       isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
         if (response.data) {
           // 已经设置
-          this.openPermissionEditTag()
+          this.openPermissionEditTab()
         } else {
           // 未设置
           this.popSettings.two.props.data = this.dataJson.listData
           this.popSettings.two.visible = true
         }
-        // 通知兄弟组件
-        // this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-        // this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
       }).finally(() => {
         this.settings.loading = false
       })
     },
     // 打开权限编辑页面
-    openPermissionEditTag() {
-
+    openPermissionEditTab() {
+      const _data = { show: true, name: '正在编辑权限：xxxxx' }
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_TAB)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_TAB, _data)
     },
     // 页面关闭后操作
     handleOperateStepOneDialogCloseMeOk(val) {
