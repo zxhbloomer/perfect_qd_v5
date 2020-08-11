@@ -658,6 +658,9 @@ export default {
     // ------------------编辑弹出框 end--------------------
     // -----------------选择根目录 start------------------
     handleSetUpOperation(val) {
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
       isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
         if (response.data) {
           // 已经设置
