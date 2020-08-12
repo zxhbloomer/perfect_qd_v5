@@ -349,11 +349,11 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING, _data => { this.settings.loading = true })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK, _data => { this.settings.loading = false })
     // 开始编辑操作权限时，接收兄弟信息，把tree设置为不可用
-    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT, _data => {
       this.settings.tree.disabled = true
     })
     // 操作权限编辑完成后，接收兄弟信息，把tree设置为可用
-    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK, _data => {
       this.settings.tree.disabled = false
     })
   },
@@ -425,7 +425,7 @@ export default {
     },
     // 悬浮层点击事件
     handleOverLayClick() {
-      this.$alert('点击无效，请先编辑权限！', '提示', {
+      this.$alert('点击无效，请完成操作权限的编辑，并点击保存！', '提示', {
         confirmButtonText: '关闭',
         type: 'error'
       }).then(() => {

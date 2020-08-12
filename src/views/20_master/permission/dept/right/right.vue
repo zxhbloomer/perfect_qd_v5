@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-tabs v-model="settings.tabs.activeName" @tab-click="handleTabsClick">
+    <el-tabs v-model="settings.tabs.activeName" @tab-click="handleTabsClick" @tab-remove="handleRemoveTab">
       <el-tab-pane name="main" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;" :disabled="dataJson.tab.show">
         <template slot="label">权限列表</template>
         <permission-template :height="height - 142" />
       </el-tab-pane>
-      <el-tab-pane v-if="dataJson.tab.show" name="edit_permission" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
+      <el-tab-pane v-if="dataJson.tab.show" name="edit_permission" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;" closable>
         <template slot="label">{{ dataJson.tab.name }}</template>
         <operation-template :height="height - 42" :head-info="dataJson.operation_head_info" />
       </el-tab-pane>
@@ -99,7 +99,7 @@ export default {
       this.dataJson.leftTreeData = _data
     })
     // 开始编辑操作权限时，接收兄弟消息，激活新tab开始编辑权限操作
-    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT, _data => {
       this.dataJson.tab = _data.operate_tab_info
       this.settings.tabs.activeName = 'edit_permission'
       this.dataJson.operation_head_info = _data.operate_tab_header_info.info
@@ -110,6 +110,29 @@ export default {
   methods: {
     handleTabsClick(tab, event) {
       // console.log(tab, event)
+    },
+    // 点击tabs的关闭
+    handleRemoveTab(targetName) {
+      if (targetName === 'edit_permission') {
+        this.$confirm('您点击了关闭当前页签的操作，请注意保存当前数据。', '确认信息', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '取消',
+          cancelButtonText: '确认关闭'
+        }).then(() => {
+        }).catch(action => {
+          // 右上角X
+          if (action === 'cancel') {
+            // 通知兄弟组件
+            this.doCloseTab()
+          }
+        })
+      }
+    },
+    doCloseTab() {
+      this.dataJson.tab.show = false
+      this.settings.tabs.activeName = 'main'
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK, null)
     }
   }
 }
