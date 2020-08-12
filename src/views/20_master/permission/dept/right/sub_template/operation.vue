@@ -132,6 +132,10 @@ export default {
     headInfo: {
       type: String,
       default: ''
+    },
+    permissionId: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -140,6 +144,7 @@ export default {
         // 查询使用的json
         searchForm: {
           // 查询条件
+          permission_id: this.permissionId
         },
         // table使用的json
         listData: null,
@@ -185,7 +190,6 @@ export default {
     getDataList() {
       // 查询逻辑
       this.settings.loading = true
-      this.dataJson.searchForm.root_id = 89
       getOperationListApi(this.dataJson.searchForm).then(response => {
         // 增加对象属性，columnTypeShowIcon，columnNameShowIcon
         const recorders = response.data.menu_data

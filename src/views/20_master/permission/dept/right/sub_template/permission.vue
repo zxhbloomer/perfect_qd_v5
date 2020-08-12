@@ -672,13 +672,17 @@ export default {
         }
       }).finally(() => {
         this.settings.loading = false
+        // 通知兄弟组件
+        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
       })
     },
     // 打开权限编辑页面
     openPermissionEditTab() {
       const operate_tab_data = {
         operate_tab_info: { show: true, name: '正在编辑操作权限：【' + this.dataJson.currentJson.name + '】' },
-        operate_tab_header_info: { info: this.dataJson.head.info }
+        operate_tab_header_info: { info: this.dataJson.head.info },
+        permission: { permissionId: this.dataJson.currentJson.id }
       }
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT)
