@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="position: relative">
+    <perfect-overLay v-if="settings.tree.disabled" value="true" @click="handleOverLayClick" />
     <el-input
       ref="minusLeftFilterInput"
       v-model="dataJson.filterText"
@@ -228,9 +229,10 @@
 import { getTreeListApi } from '@/api/20_master/permission/org/org'
 import elDragDialog from '@/directive/el-drag-dialog'
 import '@/styles/org_png.scss'
+import perfectOverLay from '@/components/99_util/overlay'
 
 export default {
-  components: { },
+  components: { perfectOverLay },
   directives: { elDragDialog },
   props: {
     height: {
@@ -347,7 +349,6 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING, _data => { this.settings.loading = true })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK, _data => { this.settings.loading = false })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
-      debugger
       this.settings.tree.disabled = true
     })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK, _data => {
@@ -419,6 +420,15 @@ export default {
     handleRefresh() {
       // 初始化查询
       this.getDataList()
+    },
+    // 悬浮层点击事件
+    handleOverLayClick() {
+      this.$alert('点击无效，请先编辑权限！', '提示', {
+        confirmButtonText: '关闭',
+        type: 'error'
+      }).then(() => {
+        this.settings.btnShowStatus.showExport = false
+      })
     }
   }
 }
