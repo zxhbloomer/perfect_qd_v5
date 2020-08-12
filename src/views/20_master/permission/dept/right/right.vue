@@ -7,7 +7,7 @@
       </el-tab-pane>
       <el-tab-pane v-if="dataJson.tab.show" name="edit_permission" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
         <template slot="label">{{ dataJson.tab.name }}</template>
-        <operation-template :height="height - 42" />
+        <operation-template :height="height - 42" :head-info="dataJson.operation_head_info" />
       </el-tab-pane>
     </el-tabs>
 
@@ -76,7 +76,8 @@ export default {
         tab: {
           show: false,
           name: ''
-        }
+        },
+        operation_head_info: ''
       },
       // 页面设置json
       settings: {
@@ -101,6 +102,7 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
       this.dataJson.tab = _data.operate_tab_info
       this.settings.tabs.activeName = 'edit_permission'
+      this.dataJson.operation_head_info = _data.operate_tab_header_info.info
     })
   },
   created() {

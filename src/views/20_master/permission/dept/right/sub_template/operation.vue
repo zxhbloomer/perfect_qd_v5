@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-alert
-      :title="dataJson.head.info"
+      :title="headInfo"
       type="info"
       effect="dark"
       show-icon
@@ -128,6 +128,10 @@ export default {
     meDialogStatus: {
       type: Boolean,
       default: false
+    },
+    headInfo: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -140,10 +144,7 @@ export default {
         // table使用的json
         listData: null,
         // 当前表格中的索引，第几条
-        rowIndex: 0,
-        head: {
-          info: ''
-        }
+        rowIndex: 0
       },
       // 页面设置json
       settings: {
@@ -162,11 +163,6 @@ export default {
     this.initShow()
   },
   mounted() {
-    // 开始编辑操作权限时，接收兄弟消息，设置头部名称
-    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
-      debugger
-      this.dataJson.head.info = _data.operate_tab_header_info
-    })
   },
   methods: {
     initShow() {
