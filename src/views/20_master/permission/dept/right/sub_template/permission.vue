@@ -676,10 +676,13 @@ export default {
     },
     // 打开权限编辑页面
     openPermissionEditTab() {
-      const _data = { show: true, name: '正在编辑权限：xxxxx' }
+      const operate_tab_data = {
+        operate_tab_info: { show: true, name: '正在编辑权限：【' + this.dataJson.currentJson.name + '】' },
+        operate_tab_header_info: { info: this.dataJson.head.info }
+      }
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT)
-      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, operate_tab_data)
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
       this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)

@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-tabs v-model="settings.tabs.activeName" @tab-click="handleTabsClick">
-      <el-tab-pane name="main" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
+      <el-tab-pane name="main" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;" :disabled="dataJson.tab.show">
         <template slot="label">权限列表</template>
         <permission-template :height="height - 142" />
       </el-tab-pane>
-      <el-tab-pane v-if="dataJson.tab.show" name="group" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
+      <el-tab-pane v-if="dataJson.tab.show" name="edit_permission" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;">
         <template slot="label">{{ dataJson.tab.name }}</template>
         <operation-template :height="height - 42" />
       </el-tab-pane>
@@ -97,8 +97,10 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE, _data => {
       this.dataJson.leftTreeData = _data
     })
+    // 开始编辑操作权限时，接收兄弟消息，激活新tab开始编辑权限操作
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
-      this.dataJson.tab = _data
+      this.dataJson.tab = _data.operate_tab_info
+      this.settings.tabs.activeName = 'edit_permission'
     })
   },
   created() {

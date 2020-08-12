@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative">
-    <perfect-overLay v-if="settings.tree.disabled" value="true" @click="handleOverLayClick" />
+    <perfect-overLay v-if="settings.tree.disabled" :value="settings.tree.disabled" @click="handleOverLayClick" />
     <el-input
       ref="minusLeftFilterInput"
       v-model="dataJson.filterText"
@@ -348,9 +348,11 @@ export default {
     // 描绘完成
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING, _data => { this.settings.loading = true })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK, _data => { this.settings.loading = false })
+    // 开始编辑操作权限时，接收兄弟信息，把tree设置为不可用
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
       this.settings.tree.disabled = true
     })
+    // 操作权限编辑完成后，接收兄弟信息，把tree设置为可用
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK, _data => {
       this.settings.tree.disabled = false
     })
