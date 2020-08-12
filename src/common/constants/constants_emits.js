@@ -25,7 +25,8 @@ const EMIT_ORG_POSITION_UPDATED = 'global:org:position_updated'
  */
 const EMIT_PERMISSION_DEPT_LEFT = 'global:permission_dept:getDataListLeft'
 const EMIT_PERMISSION_DEPT_CHANGE = 'global:permission_dept:getDataList'
-const EMIT_PERMISSION_DEPT_TAB = 'global:permission_dept:tab'
+const EMIT_PERMISSION_DEPT_PERMISSION_EDIT = 'global:permission_dept:edit_permission'
+const EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK = 'global:permission_dept:edit_permission_ok'
 const EMIT_PERMISSION_DEPT_LOADING = 'global:permission_dept:getDataList_loading'
 const EMIT_PERMISSION_DEPT_LOADING_OK = 'global:permission_dept:getDataList_loading_ok'
 
@@ -43,7 +44,8 @@ export default {
    */
   EMIT_PERMISSION_DEPT_LEFT,
   EMIT_PERMISSION_DEPT_CHANGE,
-  EMIT_PERMISSION_DEPT_TAB,
+  EMIT_PERMISSION_DEPT_PERMISSION_EDIT,
+  EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK,
   EMIT_PERMISSION_DEPT_LOADING,
   EMIT_PERMISSION_DEPT_LOADING_OK
 }

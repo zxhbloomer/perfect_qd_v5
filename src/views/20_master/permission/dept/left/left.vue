@@ -270,6 +270,9 @@ export default {
         defaultProps: {
           children: 'children',
           label: 'label'
+        },
+        tree: {
+          disabled: false
         }
       },
       popSettingsData: {
@@ -343,6 +346,13 @@ export default {
     // 描绘完成
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING, _data => { this.settings.loading = true })
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK, _data => { this.settings.loading = false })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
+      debugger
+      this.settings.tree.disabled = true
+    })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT_OK, _data => {
+      this.settings.tree.disabled = false
+    })
   },
   methods: {
     // 选择or重置按钮的初始化

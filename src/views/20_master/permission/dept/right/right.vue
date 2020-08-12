@@ -97,7 +97,7 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_CHANGE, _data => {
       this.dataJson.leftTreeData = _data
     })
-    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_TAB, _data => {
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data => {
       this.dataJson.tab = _data
     })
   },

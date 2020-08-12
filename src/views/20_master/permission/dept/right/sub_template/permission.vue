@@ -678,8 +678,11 @@ export default {
     openPermissionEditTab() {
       const _data = { show: true, name: '正在编辑权限：xxxxx' }
       // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_TAB)
-      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_TAB, _data)
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_PERMISSION_EDIT, _data)
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
     },
     // 页面关闭后操作
     handleOperateStepOneDialogCloseMeOk(val) {
