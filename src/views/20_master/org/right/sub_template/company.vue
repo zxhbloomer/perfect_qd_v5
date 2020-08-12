@@ -268,8 +268,8 @@ export default {
     },
     getDataList(val) {
       // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING)
-      this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING)
+      this.$off(this.EMITS.EMIT_ORG_LOADING)
+      this.$emit(this.EMITS.EMIT_ORG_LOADING)
       this.dataJson.searchForm.pageCondition.current = this.dataJson.paging.current
       this.dataJson.searchForm.pageCondition.size = this.dataJson.paging.size
       // 查询逻辑
@@ -280,8 +280,8 @@ export default {
         this.dataJson.paging = response.data
         this.dataJson.paging.records = {}
         // 通知兄弟组件
-        this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
+        this.$off(this.EMITS.EMIT_ORG_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_ORG_LOADING_OK)
       }).finally(() => {
         this.settings.listLoading = false
       })

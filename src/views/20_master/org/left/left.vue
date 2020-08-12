@@ -104,8 +104,8 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-divider />
-        <el-button plain :disabled="settings.listLoading" @click="popSettingsData.dialogFormVisible = false">取消</el-button>
-        <!-- <el-button plain type="primary" :disabled="settings.listLoading || popSettingsData.btnDisabledStatus.disabledOK " @click="doOk()">确定</el-button> -->
+        <el-button plain :disabled="settings.loading" @click="popSettingsData.dialogFormVisible = false">取消</el-button>
+        <!-- <el-button plain type="primary" :disabled="settings.loading || popSettingsData.btnDisabledStatus.disabledOK " @click="doOk()">确定</el-button> -->
       </div>
     </el-dialog>
 
@@ -368,7 +368,7 @@ export default {
       settings: {
         para: this.CONSTANTS.DICT_ORG_SETTING_TYPE,
         filterPara: [],
-        listLoading: true,
+        loading: true,
         // 按钮状态：是否可用
         btnDisabledStatus: {
           disabledInsert: true,
@@ -517,7 +517,7 @@ export default {
         }
       }
     },
-    'settings.listLoading': {
+    'settings.loading': {
       handler(newVal, oldVal) {
         switch (newVal) {
           case true:
@@ -541,8 +541,8 @@ export default {
     this.initSearchButton()
     // 和right开始绑定事件
     // 描绘完成
-    this.$on(this.EMITS.EMIT_LOADING, _data => { this.settings.listLoading = true })
-    this.$on(this.EMITS.EMIT_LOADING_OK, _data => { this.settings.listLoading = false })
+    this.$on(this.EMITS.EMIT_ORG_LOADING, _data => { this.settings.loading = true })
+    this.$on(this.EMITS.EMIT_ORG_LOADING_OK, _data => { this.settings.loading = false })
   },
   methods: {
     // 选择or重置按钮的初始化
@@ -557,11 +557,11 @@ export default {
     },
     getDataList() {
       // 查询逻辑
-      this.settings.listLoading = true
+      this.settings.loading = true
       getTreeListApi(this.dataJson.searchForm).then(response => {
         this.dataJson.treeData = response.data
         this.getListAfterProcess()
-        this.settings.listLoading = false
+        this.settings.loading = false
         this.$nextTick(() => {
           let current_node = null
           if (this.dataJson.currentJson === null) {
@@ -576,7 +576,7 @@ export default {
           this.handleCurrentChange(current_node)
         })
       }).finally(() => {
-        this.settings.listLoading = false
+        this.settings.loading = false
       })
     },
     handleCurrentChange(row) {
@@ -694,7 +694,7 @@ export default {
         this.dataJson.currentJson = null
         this.getDataList()
         this.popSettingsData.dialogFormVisible = false
-        this.settings.listLoading = false
+        this.settings.loading = false
       }, (_error) => {
         this.$notify({
           title: '新增处理失败',
@@ -704,7 +704,7 @@ export default {
         })
         // this.popSettingsData.dialogFormVisible = false
       }).finally(() => {
-        this.settings.listLoading = false
+        this.settings.loading = false
       })
     },
     // --------------弹出查询框：开始--------------
@@ -712,7 +712,7 @@ export default {
     handleGroupCloseOk(val) {
       this.popSettingsData.searchDialogDataOne.selectedDataJson = val
       this.popSettingsData.searchDialogDataOne.visible = false
-      this.settings.listLoading = true
+      this.settings.loading = true
       if (this.popSettingsData.dialogStatus === this.PARAMETERS.STATUS_INSERT) {
         insertApi({
           serial_id: this.popSettingsData.searchDialogDataOne.selectedDataJson.id,
@@ -737,7 +737,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       } else {
         updateApi({
@@ -767,7 +767,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       }
     },
@@ -779,7 +779,7 @@ export default {
     handleCompanyCloseOk(val) {
       this.popSettingsData.searchDialogDataTwo.selectedDataJson = val
       this.popSettingsData.searchDialogDataTwo.visible = false
-      this.settings.listLoading = true
+      this.settings.loading = true
       if (this.popSettingsData.dialogStatus === this.PARAMETERS.STATUS_INSERT) {
         insertApi({
           serial_id: this.popSettingsData.searchDialogDataTwo.selectedDataJson.id,
@@ -804,7 +804,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       } else {
         updateApi({
@@ -834,7 +834,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       }
     },
@@ -846,7 +846,7 @@ export default {
     handleDeptCloseOk(val) {
       this.popSettingsData.searchDialogDataThree.selectedDataJson = val
       this.popSettingsData.searchDialogDataThree.visible = false
-      this.settings.listLoading = true
+      this.settings.loading = true
       if (this.popSettingsData.dialogStatus === this.PARAMETERS.STATUS_INSERT) {
         insertApi({
           serial_id: this.popSettingsData.searchDialogDataThree.selectedDataJson.id,
@@ -871,7 +871,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       } else {
         updateApi({
@@ -901,7 +901,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       }
     },
@@ -913,7 +913,7 @@ export default {
     handlePositionCloseOk(val) {
       this.popSettingsData.searchDialogDataFour.selectedDataJson = val
       this.popSettingsData.searchDialogDataFour.visible = false
-      this.settings.listLoading = true
+      this.settings.loading = true
       if (this.popSettingsData.dialogStatus === this.PARAMETERS.STATUS_INSERT) {
         insertApi({
           serial_id: this.popSettingsData.searchDialogDataFour.selectedDataJson.id,
@@ -938,7 +938,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       } else {
         updateApi({
@@ -968,7 +968,7 @@ export default {
           })
           // this.popSettingsData.dialogFormVisible = false
         }).finally(() => {
-          this.settings.listLoading = false
+          this.settings.loading = false
         })
       }
     },
@@ -993,7 +993,7 @@ export default {
         this.dataJson.selectOptions = _data.data
       }, (_error) => {
       }).finally(() => {
-        this.settings.listLoading = false
+        this.settings.loading = false
       })
     },
     handleDragStart(node, ev) {
@@ -1036,9 +1036,9 @@ export default {
       this.doDragSave()
     },
     doDragSave() {
-      this.settings.listLoading = true
-      this.$off(this.EMITS.EMIT_LOADING)
-      this.$emit(this.EMITS.EMIT_LOADING)
+      this.settings.loading = true
+      this.$off(this.EMITS.EMIT_ORG_LOADING)
+      this.$emit(this.EMITS.EMIT_ORG_LOADING)
       dragsaveApi(this.dataJson.treeData).then((_data) => {
         this.$notify({
           title: '更新处理成功',
@@ -1050,8 +1050,8 @@ export default {
         this.getDataList()
         this.popSettingsData.dialogFormVisible = false
         this.getDataList()
-        this.$off(this.EMITS.EMIT_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_LOADING_OK)
+        this.$off(this.EMITS.EMIT_ORG_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_ORG_LOADING_OK)
       }, (_error) => {
         this.$notify({
           title: '更新处理失败',
@@ -1060,10 +1060,10 @@ export default {
           duration: this.settings.duration
         })
         // this.popSettingsData.dialogFormVisible = false
-        this.$off(this.EMITS.EMIT_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_LOADING_OK)
+        this.$off(this.EMITS.EMIT_ORG_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_ORG_LOADING_OK)
       }).finally(() => {
-        this.settings.listLoading = false
+        this.settings.loading = false
       })
     },
     allowDrop(draggingNode, dropNode, type) {

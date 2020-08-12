@@ -454,8 +454,8 @@ export default {
     },
     getDataList(val) {
       // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING)
-      this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING)
+      this.$off(this.EMITS.EMIT_ORG_LOADING)
+      this.$emit(this.EMITS.EMIT_ORG_LOADING)
       // 查询逻辑
       this.settings.listLoading = true
       this.dataJson.searchForm = Object.assign({}, val)
@@ -466,8 +466,8 @@ export default {
         })
         this.dataJson.listData = newRecorders
         // 通知兄弟组件
-        this.$off(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_ORG_CHANGE_LOADING_OK)
+        this.$off(this.EMITS.EMIT_ORG_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_ORG_LOADING_OK)
       }).finally(() => {
         this.settings.listLoading = false
       })

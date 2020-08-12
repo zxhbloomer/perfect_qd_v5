@@ -1,8 +1,3 @@
-/**
- * loading控件
- */
-const EMIT_LOADING = 'global:getDataList_loading'
-const EMIT_LOADING_OK = 'global:getDataList_loading_ok'
 
 /**
  * 组织机构管理页面之间，进行通讯，兄弟通讯，
@@ -17,8 +12,8 @@ const EMIT_LOADING_OK = 'global:getDataList_loading_ok'
  */
 const EMIT_ORG_LEFT = 'global:org:getDataListLeft'
 const EMIT_ORG_CHANGE = 'global:org:getDataList'
-const EMIT_ORG_CHANGE_LOADING = 'global:org:getDataList_loading'
-const EMIT_ORG_CHANGE_LOADING_OK = 'global:org:getDataList_loading_ok'
+const EMIT_ORG_LOADING = 'global:org:getDataList_loading'
+const EMIT_ORG_LOADING_OK = 'global:org:getDataList_loading_ok'
 const EMIT_ORG_POSITION_UPDATED = 'global:org:position_updated'
 
 /**
@@ -35,15 +30,13 @@ const EMIT_PERMISSION_DEPT_LOADING = 'global:permission_dept:getDataList_loading
 const EMIT_PERMISSION_DEPT_LOADING_OK = 'global:permission_dept:getDataList_loading_ok'
 
 export default {
-  EMIT_LOADING,
-  EMIT_LOADING_OK,
   /**
    * 组织机构管理页面之间，进行通讯，兄弟通讯，
    */
   EMIT_ORG_LEFT,
   EMIT_ORG_CHANGE,
-  EMIT_ORG_CHANGE_LOADING,
-  EMIT_ORG_CHANGE_LOADING_OK,
+  EMIT_ORG_LOADING,
+  EMIT_ORG_LOADING_OK,
   EMIT_ORG_POSITION_UPDATED,
   /**
    * 部门权限页面之间，进行通讯，兄弟通讯，
