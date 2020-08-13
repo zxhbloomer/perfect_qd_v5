@@ -48,39 +48,21 @@
       </el-table-column>
       <el-table-column header-align="center" label="权限" min-width="260">
         <template v-slot="operations">
+          {{ operations.row.function_info }}
           <el-row>
             <el-col v-for="item in operations.row.function_info" :key="item.code" :span="4">
-              <el-checkbox v-model="item.perms">{{ item.name }}</el-checkbox>
+              <el-checkbox v-model="item.is_enable">{{ item.name }}</el-checkbox>
             </el-col>
           </el-row>
-          <!-- <span v-for="item in operations.row.function_info" :key="item.code">
-            <el-checkbox v-model="item.perms">{{ item.name }}</el-checkbox>
-          </span> -->
         </template>
-        <!-- <el-table-column
-          v-for="button_column in dataJson.menu_buttons"
-          :key="button_column.code"
-          align="center"
-          :prop="button_column.code"
-          :label="button_column.name"
-          min-width="100"
-        >
-          <template v-slot="column_lists">
-            <div v-if="column_lists.row.function_info.filter(item => item.code===button_column.code)[0]">
-              〇
-            </div>
-            <div v-else>
-              -
-            </div>
-
-          </template>
-          -
-        </el-table-column> -->
       </el-table-column>
       <el-table-column header-align="center" label="全选" min-width="30">
-        <template>
-          <el-checkbox />
+        <template v-slot="operations">
+          <div v-if="operations.row.function_info.length > 0">
+            <el-checkbox v-model="operations.row.check_all" :indeterminate="operations.row.indeterminate" @change="handleCheckAllChange(operations.row)" />
+          </div>
         </template>
+        <template />
       </el-table-column>
     </el-table>
 
@@ -193,9 +175,8 @@ export default {
       getOperationListApi(this.dataJson.searchForm).then(response => {
         // 增加对象属性，columnTypeShowIcon，columnNameShowIcon
         const recorders = response.data.menu_data
-
         this.dataJson.listData = recorders
-        this.dataJson.menu_buttons = response.data.menu_buttons
+        // this.dataJson.menu_buttons = response.data.menu_buttons
         this.dataJson.paging = response.data.menu_data
         this.dataJson.paging.records = {}
       }).finally(() => {
@@ -203,6 +184,9 @@ export default {
         this.settings.loading = false
         this.$refs.multipleTable.setCurrentRow()
       })
+    },
+    handleCheckAllChange(val) {
+      debugger
     }
   }
 }
