@@ -1,21 +1,29 @@
+import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event'
+
 export default {
   beforeCreate() {
     // 设置页面的name 页面id，和router中的name需要一致，作为缓存
     this.$options.name = this.$route.name
   },
   beforeMount() {
-    window.addEventListener('resize', this.resizeHandler)
   },
   mounted() {
     this.dataJson.tabHeightStyle = 'height:' + this.setUIheight() + 'px'
+    this.$nextTick(() => {
+      addResizeListener(window.document.body, this.doResize)
+    })
   },
   created() {
   },
   updated() {
     this.dataJson.tabHeightStyle = 'height:' + this.setUIheight() + 'px'
   },
+  // 生命周期结束时销毁事件
+  destroyed() {
+    if (this.resizeListener) removeResizeListener(window.document.body, this.doResize)
+  },
   methods: {
-    resizeHandler() {
+    doResize() {
       this.dataJson.tabHeightStyle = 'height:' + this.setUIheight() + 'px'
     },
     setUIheight() {
