@@ -24,7 +24,7 @@
       highlight-current-row
       style="width: 100%"
       default-expand-all
-      row-key="id"
+      row-key="menu_id"
       @row-click="handleRowClick"
       @current-change="handleCurrentChange"
     >
