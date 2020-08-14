@@ -8,6 +8,9 @@
       :closable="false"
     />
     <br>
+    <el-button-group>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="settings.loading" @click="handleSave">保存</el-button>
+    </el-button-group>
 
     <el-table
       v-cloak
@@ -47,8 +50,24 @@
         </template>
       </el-table-column>
       <el-table-column header-align="center" label="权限" min-width="260">
+        <template v-slot:header>
+          <span>
+            权限
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="bottom"
+            >
+              <div slot="content">
+                权限状态提示： <br>
+                已勾选：已授权 <br>
+                未勾选：未授权 <br>
+              </div>
+              <svg-icon icon-class="perfect-icon-question1_btn" style="margin-left: 5px" />
+            </el-tooltip>
+          </span>
+        </template>
         <template v-slot="operations">
-          {{ operations.row.function_info }}
           <el-row>
             <el-col v-for="item in operations.row.function_info" :key="item.code" :span="4">
               <el-checkbox v-model="item.is_enable">{{ item.name }}</el-checkbox>
@@ -57,6 +76,22 @@
         </template>
       </el-table-column>
       <el-table-column header-align="center" label="全选" min-width="30">
+        <template v-slot:header>
+          <span>
+            全选
+            <el-tooltip
+              class="item"
+              effect="dark"
+              placement="bottom"
+            >
+              <div slot="content">
+                全选提示： <br>
+                勾选全选时，左侧对应的权限将会全部自动勾选。<br>
+              </div>
+              <svg-icon icon-class="perfect-icon-question1_btn" style="margin-left: 5px" />
+            </el-tooltip>
+          </span>
+        </template>
         <template v-slot="operations">
           <div v-if="operations.row.function_info.length > 0">
             <el-checkbox v-model="operations.row.check_all" :indeterminate="operations.row.indeterminate" @change="handleCheckAllChange(operations.row)" />
@@ -187,6 +222,11 @@ export default {
     },
     handleCheckAllChange(val) {
       debugger
+    },
+    handleSave() {
+      // 查找数组
+      const operation_data = this.getJsonObjects(this.dataJson.listData, 'function_info')
+      console.log(operation_data)
     }
   }
 }

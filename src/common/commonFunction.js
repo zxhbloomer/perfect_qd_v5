@@ -127,5 +127,37 @@ export default {
     Vue.prototype.formatDateTime = function(data, type = 1) {
       return this.formatDate(data, type) + ' ' + this.formatTime(data)
     }
+
+    /**
+     * 递归查找json中的值
+     * @param {*} obj json对象
+     * @param {*} key json中的field
+     * @param {*} val json中的value
+     */
+    Vue.prototype.getJsonObjects = function(obj, key, val) {
+      var objects = []
+      for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) {
+          continue
+        }
+        if (typeof obj[i] === 'object') {
+          if (i === key && obj[i].length > 0) {
+            objects = [...obj[i]]
+          }
+          objects = objects.concat(Vue.prototype.getJsonObjects(obj[i], key, val))
+        } else {
+          // if key matches and value matches or if key matches and value is not passed (eliminating the case where key matches but passed value does not)
+          if (i === key && obj[i] === val || i === key && val === '') { //
+            objects.push(obj)
+          } else if (obj[i] === val && key === '') {
+          // only add if the object is not already in the array
+            if (objects.lastIndexOf(obj) === -1) {
+              objects.push(obj)
+            }
+          }
+        }
+      }
+      return objects
+    }
   }
 }
