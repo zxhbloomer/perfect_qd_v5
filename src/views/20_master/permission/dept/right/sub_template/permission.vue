@@ -696,6 +696,8 @@ export default {
       // 执行复制逻辑
       this.settings.loading = true
       setSystemMenuData2PermissionDataApi({ 'permission_id': this.dataJson.currentJson.id, 'root_id': val.select }).then((_data) => {
+        // 处理成功后，打开权限编辑页面
+        this.handleSetUpOperation(this.dataJson.currentJson)
       }, (_error) => {
         this.$notify({
           title: '处理失败',

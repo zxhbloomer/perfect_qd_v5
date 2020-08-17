@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-alert
+      ref="minusAlert"
       :title="headInfo"
       type="info"
       effect="dark"
@@ -8,9 +9,16 @@
       :closable="false"
     />
     <br>
-    <el-button-group>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" :disabled="settings.loading || settings.btnDisabledStatus.disabledSave " :loading="settings.loading" @click="handleSave">保存</el-button>
-    </el-button-group>
+    <el-form
+      ref="minusForm"
+      :inline="true"
+    >
+      <el-form-item label="">
+        <el-button-group>
+          <el-button type="primary" icon="el-icon-circle-plus-outline" :disabled="settings.loading || settings.btnDisabledStatus.disabledSave " :loading="settings.loading" @click="handleSave">保存</el-button>
+        </el-button-group>
+      </el-form-item>
+    </el-form>
 
     <el-table
       v-cloak

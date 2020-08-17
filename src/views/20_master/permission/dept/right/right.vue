@@ -7,7 +7,7 @@
       </el-tab-pane>
       <el-tab-pane v-if="dataJson.tab.show" name="edit_permission" :style="{height: height + 'px'}" style="overflow-y:auto;overflow-x:hidden;" closable>
         <template slot="label">{{ dataJson.tab.name }}</template>
-        <operation-template :height="height - 42" :head-info="dataJson.operation_head_info" :permission-id="dataJson.permissionId" />
+        <operation-template :height="height - 102" :head-info="dataJson.operation_head_info" :permission-id="dataJson.permissionId" />
       </el-tab-pane>
     </el-tabs>
 
