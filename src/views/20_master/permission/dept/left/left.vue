@@ -429,7 +429,7 @@ export default {
         confirmButtonText: '关闭',
         type: 'error'
       }).then(() => {
-        this.settings.btnShowStatus.showExport = false
+
       })
     }
   }

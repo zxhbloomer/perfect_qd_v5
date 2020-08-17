@@ -9,7 +9,7 @@
     />
     <br>
     <el-button-group>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="settings.loading" @click="handleSave">保存</el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" :disabled="settings.loading || settings.btnDisabledStatus.disabledSave " :loading="settings.loading" @click="handleSave">保存</el-button>
     </el-button-group>
 
     <el-table
@@ -69,8 +69,8 @@
         </template>
         <template v-slot="operations">
           <el-row>
-            <el-col v-for="item in operations.row.function_info" :key="item.code" :span="4">
-              <el-checkbox v-model="item.is_enable">{{ item.name }}</el-checkbox>
+            <el-col v-for="item in operations.row.function_info" :key="item.id" :span="4">
+              <el-checkbox v-model="item.is_enable" @change="handleCheck(operations.row)">{{ item.name }}</el-checkbox>
             </el-col>
           </el-row>
         </template>
@@ -129,7 +129,7 @@
 
 <script>
 import '@/styles/menu_png.scss'
-import { getOperationListApi } from '@/api/20_master/permission/operation/operation'
+import { getOperationListApi, savePermissionApi } from '@/api/20_master/permission/operation/operation'
 import deepCopy from 'deep-copy'
 
 export default {
@@ -157,6 +157,10 @@ export default {
   },
   data() {
     return {
+      // 监听器
+      watch: {
+        unwatch_tempJson: null
+      },
       dataJson: {
         // 查询使用的json
         searchForm: {
@@ -172,7 +176,11 @@ export default {
       settings: {
         // loading 状态
         loading: true,
-        duration: 4000
+        duration: 4000,
+        // 按钮状态：是否可用，false:可用，true不可用
+        btnDisabledStatus: {
+          disabledSave: true
+        }
       }
     }
   },
@@ -191,6 +199,21 @@ export default {
       // 初始化查询
       this.getDataList()
     },
+    // 设置监听器
+    setWatch() {
+      this.unWatch()
+      // 监听页面上面是否有修改，有修改按钮高亮
+      this.watch.unwatch_tempJson = this.$watch('dataJson.listData', (newVal, oldVal) => {
+        this.settings.btnDisabledStatus.disabledSave = false
+      },
+      { deep: true }
+      )
+    },
+    unWatch() {
+      if (this.watch.unwatch_tempJson) {
+        this.watch.unwatch_tempJson()
+      }
+    },
     // 行点击
     handleRowClick(row) {
       this.dataJson.rowIndex = this.getRowIndex(row)
@@ -208,25 +231,51 @@ export default {
       // 查询逻辑
       this.settings.loading = true
       getOperationListApi(this.dataJson.searchForm).then(response => {
-        // 增加对象属性，columnTypeShowIcon，columnNameShowIcon
         const recorders = response.data.menu_data
         this.dataJson.listData = recorders
-        // this.dataJson.menu_buttons = response.data.menu_buttons
-        this.dataJson.paging = response.data.menu_data
-        this.dataJson.paging.records = {}
       }).finally(() => {
         this.dataJson.currentJson = undefined
         this.settings.loading = false
         this.$refs.multipleTable.setCurrentRow()
+
+        // 初始化watch
+        this.setWatch()
       })
     },
+    // 当前行的权限全部勾选
     handleCheckAllChange(val) {
-      debugger
+      val.function_info.forEach(item => {
+        item.is_enable = val.check_all
+      })
+    },
+    // 勾选某一权限时，判断全选组件的状态
+    handleCheck(val) {
+      const _checked_count = val.function_info.filter(item => item.is_enable === true).length
+      const _operation_count = val.function_info.length
+      val.check_all = _checked_count === _operation_count
+      val.indeterminate = _checked_count > 0 && _checked_count < _operation_count
     },
     handleSave() {
+      this.settings.loading = true
       // 查找数组
       const operation_data = this.getJsonObjects(this.dataJson.listData, 'function_info')
-      console.log(operation_data)
+      savePermissionApi(operation_data).then((_data) => {
+        this.$notify({
+          title: '权限保存处理成功',
+          message: _data.data.message,
+          type: 'success',
+          duration: this.settings.duration
+        })
+      }, (_error) => {
+        this.$notify({
+          title: '权限保存处理失败',
+          message: _error.error.message,
+          type: 'error',
+          duration: this.settings.duration
+        })
+      }).finally(() => {
+        this.settings.loading = false
+      })
     }
   }
 }
