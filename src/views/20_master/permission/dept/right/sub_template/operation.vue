@@ -39,6 +39,7 @@
       @row-click="handleRowClick"
       @current-change="handleCurrentChange"
     >
+      <el-table-column v-if="!meDialogStatus" type="selection" width="45" prop="id" />
       <el-table-column header-align="center" type="index" width="45" fixed />
       <el-table-column header-align="center" show-overflow-tooltip min-width="120" prop="name" label="菜单名称" fixed>
         <template v-slot="scope">
