@@ -133,18 +133,24 @@ export default {
      * @param {*} obj json对象
      * @param {*} key json中的field
      * @param {*} val json中的value
+     * @param {*} ignoreSubObject 忽略json中子对象object，暂且支持子对象忽略
      */
-    Vue.prototype.getJsonObjects = function(obj, key, val) {
+    Vue.prototype.getJsonObjects = function(obj, key, val, ignoreSubObject) {
       var objects = []
       for (var i in obj) {
         if (!obj.hasOwnProperty(i)) {
           continue
         }
         if (typeof obj[i] === 'object') {
-          if (i === key && obj[i].length > 0) {
-            objects = [...obj[i]]
+          if (i === ignoreSubObject && obj[i].length > 0) {
+            // 忽略子对象
+            continue
+          } else {
+            if (i === key && obj[i].length > 0) {
+              objects = [...obj[i]]
+            }
+            objects = objects.concat(Vue.prototype.getJsonObjects(obj[i], key, val, ignoreSubObject))
           }
-          objects = objects.concat(Vue.prototype.getJsonObjects(obj[i], key, val))
         } else {
           // if key matches and value matches or if key matches and value is not passed (eliminating the case where key matches but passed value does not)
           if (i === key && obj[i] === val || i === key && val === '') { //
@@ -158,6 +164,33 @@ export default {
         }
       }
       return objects
+    }
+
+    /**
+     * 递归设置json中的值
+     * @param {*} obj json对象
+     * @param {*} key json中的field
+     * @param {*} val json中的value
+     * @param {*} ignoreSubObject 忽略json中子对象object，暂且支持子对象忽略
+     */
+    Vue.prototype.setFieldValue2JsonObjects = function(obj, key, val, ignoreSubObject) {
+      for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) {
+          continue
+        }
+        if (typeof obj[i] === 'object') {
+          if (i === ignoreSubObject && obj[i].length > 0) {
+            continue
+          } else {
+            Vue.prototype.setFieldValue2JsonObjects(obj[i], key, val, ignoreSubObject)
+          }
+        } else {
+          // 递归找到元素后设置值
+          if (i === key) {
+            obj[i] = val
+          }
+        }
+      }
     }
   }
 }

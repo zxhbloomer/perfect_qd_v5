@@ -38,16 +38,21 @@
       row-key="menu_id"
       @row-click="handleRowClick"
       @current-change="handleCurrentChange"
+      @select-all="handleCheckAllMenu()"
     >
-      <el-table-column v-if="!meDialogStatus" type="selection" width="45" prop="id" />
-      <el-table-column header-align="center" type="index" width="45" fixed />
-      <el-table-column header-align="center" show-overflow-tooltip min-width="120" prop="name" label="菜单名称" fixed>
+      <el-table-column ref="column_head_selection" type="selection" min-width="45">
+        <template v-slot="scope">
+          <el-checkbox v-model="scope.row.is_enable" @change="handleCheckMenu(scope.row.is_enable, scope.row)" />
+        </template>
+      </el-table-column>
+      <el-table-column header-align="center" type="index" width="45" />
+      <el-table-column header-align="center" show-overflow-tooltip min-width="120" prop="name" label="菜单名称">
         <template v-slot="scope">
           <svg-icon v-if="scope.row.meta_icon" :icon-class="scope.row.meta_icon" :class="scope.row.meta_icon" />
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column header-align="center" show-overflow-tooltip min-width="50" prop="type_name" label="类型" fixed>
+      <el-table-column header-align="center" show-overflow-tooltip min-width="50" prop="type_name" label="类型">
         <template v-slot="scope">
           <span class="menu_png">
             <em v-if="scope.row.type ===CONSTANTS.DICT_SYS_MENU_TYPE_ROOT" class="root">根结点</em>
@@ -178,8 +183,14 @@ export default {
         },
         // table使用的json
         listData: null,
+        listDataCount: 0,
         // 当前表格中的索引，第几条
-        rowIndex: 0
+        rowIndex: 0,
+        // 菜单全选checkbox状态
+        check_all: {
+          checked: false,
+          indeterminate: false
+        }
       },
       // 页面设置json
       settings: {
@@ -242,6 +253,7 @@ export default {
       getOperationListApi(this.dataJson.searchForm).then(response => {
         const recorders = response.data.menu_data
         this.dataJson.listData = recorders
+        this.dataJson.listDataCount = response.data.data_count
       }).finally(() => {
         this.dataJson.currentJson = undefined
         this.settings.loading = false
@@ -285,6 +297,32 @@ export default {
       }).finally(() => {
         this.settings.loading = false
       })
+    },
+    // 全选
+    handleCheckAllMenu(selection) {
+      // tableData 第一层只要有在 selection 里面就是全选 dataJson.check_all.checked
+      const head_checkbox = this.$refs.multipleTable.$children[6].$children[0]
+      if (head_checkbox.isChecked) {
+        // checked --> unchecked
+        this.setFieldValue2JsonObjects(this.dataJson.listData, 'is_enable', false, 'function_info')
+      } else {
+        // unchecked -->checked
+        // 所有的is_enable都设置为checked，递归设置
+        this.setFieldValue2JsonObjects(this.dataJson.listData, 'is_enable', true, 'function_info')
+      }
+    },
+    handleCheckMenu(val, row) {
+      // 所有的is_enable都设置为传入的值，递归设置
+      this.setFieldValue2JsonObjects(row, 'is_enable', val, 'function_info')
+      // 查找已经勾选的数据
+      const _checked_count = this.getJsonObjects(this.dataJson.listData, 'is_enable', true, 'function_info')
+      // tableData 第一层只要有在 selection 里面就是全选 dataJson.check_all.checked
+      const head_checkbox = this.$refs.multipleTable.$children[6].$children[0]
+      head_checkbox.$vnode.componentOptions.propsData.value = _checked_count.length === this.dataJson.listDataCount
+      head_checkbox.$vnode.componentOptions.propsData.indeterminate = _checked_count.length > 0 && _checked_count.length < this.dataJson.listDataCount
+      // 下面会引起vue的警告，暂时没有办法，需要用户体验
+      head_checkbox.$vnode.componentInstance.value = _checked_count.length === this.dataJson.listDataCount
+      head_checkbox.$vnode.componentInstance.indeterminate = _checked_count.length > 0 && _checked_count.length < this.dataJson.listDataCount
     }
   }
 }
