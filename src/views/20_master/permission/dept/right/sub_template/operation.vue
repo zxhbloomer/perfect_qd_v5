@@ -278,9 +278,11 @@ export default {
     },
     handleSave() {
       this.settings.loading = true
-      // 查找数组
+      // 获取权限数据
       const operation_data = this.getJsonObjects(this.dataJson.listData, 'function_info')
-      savePermissionApi(operation_data).then((_data) => {
+      // 获取菜单数据
+      const menu_data = this.getJsonObjectsKeyFiledAndValueField(this.dataJson.listData, 'id', 'is_enable', 'function_info')
+      savePermissionApi({ menu_data: menu_data, operation_data: operation_data }).then((_data) => {
         this.$notify({
           title: '权限保存处理成功',
           message: _data.data.message,
@@ -295,6 +297,7 @@ export default {
           duration: this.settings.duration
         })
       }).finally(() => {
+        this.settings.btnDisabledStatus.disabledSave = true
         this.settings.loading = false
       })
     },

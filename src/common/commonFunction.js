@@ -142,7 +142,7 @@ export default {
           continue
         }
         if (typeof obj[i] === 'object') {
-          if (i === ignoreSubObject && obj[i].length > 0) {
+          if (i === ignoreSubObject && obj[i] && obj[i].length > 0) {
             // 忽略子对象
             continue
           } else {
@@ -167,6 +167,38 @@ export default {
     }
 
     /**
+     * 递归查找json中的值
+     * @param {*} obj json对象
+     * @param {*} keyField key field
+     * @param {*} valueField 查询的ValueField
+     * @param {*} ignoreSubObject 忽略json中子对象object，暂且支持子对象忽略
+     */
+    Vue.prototype.getJsonObjectsKeyFiledAndValueField = function(obj, keyField, valueField, ignoreSubObject) {
+      var objects = []
+      for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) {
+          continue
+        }
+        if (typeof obj[i] === 'object') {
+          if (i === ignoreSubObject && obj[i] && obj[i].length > 0) {
+            // 忽略子对象
+            continue
+          } else {
+            objects = objects.concat(Vue.prototype.getJsonObjectsKeyFiledAndValueField(obj[i], keyField, valueField, ignoreSubObject))
+          }
+        } else {
+          // if key matches and value matches or if key matches and value is not passed (eliminating the case where key matches but passed value does not)
+          if (i === valueField) {
+            const _data = { id: obj[keyField] }
+            _data[valueField] = obj[valueField]
+            objects.push(_data)
+          }
+        }
+      }
+      return objects
+    }
+
+    /**
      * 递归设置json中的值
      * @param {*} obj json对象
      * @param {*} key json中的field
@@ -179,7 +211,7 @@ export default {
           continue
         }
         if (typeof obj[i] === 'object') {
-          if (i === ignoreSubObject && obj[i].length > 0) {
+          if (i === ignoreSubObject && obj[i] && obj[i].length > 0) {
             continue
           } else {
             Vue.prototype.setFieldValue2JsonObjects(obj[i], key, val, ignoreSubObject)
