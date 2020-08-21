@@ -173,7 +173,8 @@ export default {
     return {
       // 监听器
       watch: {
-        unwatch_tempJson: null
+        unwatch_tempJson: null,
+        unwatch_is_edit: null
       },
       dataJson: {
         // 查询使用的json
@@ -225,13 +226,19 @@ export default {
       // 监听页面上面是否有修改，有修改按钮高亮
       this.watch.unwatch_tempJson = this.$watch('dataJson.listData', (newVal, oldVal) => {
         this.settings.btnDisabledStatus.disabledSave = false
-      },
-      { deep: true }
-      )
+      }, { deep: true })
+      this.watch.unwatch_is_edit = this.$watch('settings.btnDisabledStatus.disabledSave', (newVal, oldVal) => {
+        // 通知兄弟组件
+        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_IS_EDIT)
+        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_IS_EDIT, !newVal)
+      })
     },
     unWatch() {
       if (this.watch.unwatch_tempJson) {
         this.watch.unwatch_tempJson()
+      }
+      if (this.watch.unwatch_is_edit) {
+        this.watch.unwatch_is_edit()
       }
     },
     // 行点击

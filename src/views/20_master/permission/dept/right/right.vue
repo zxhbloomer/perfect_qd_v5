@@ -83,7 +83,8 @@ export default {
       // 页面设置json
       settings: {
         tabs: {
-          activeName: 'main'
+          activeName: 'main',
+          is_edit: false
         },
         // loading 状态
         loading: true,
@@ -105,6 +106,11 @@ export default {
       this.settings.tabs.activeName = 'edit_permission'
       this.dataJson.operation_head_info = _data.operate_tab_header_info.info
       this.dataJson.permissionId = _data.permission.permissionId
+      this.settings.tabs.is_edit = false
+    })
+    // 是否编辑
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_IS_EDIT, _data => {
+      this.settings.tabs.is_edit = _data
     })
   },
   created() {
@@ -115,19 +121,22 @@ export default {
     },
     // 点击tabs的关闭
     handleRemoveTab(targetName) {
-      if (targetName === 'edit_permission') {
-        this.$confirm('您点击了关闭当前页签的操作，请注意保存当前数据。', '确认信息', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '取消',
-          cancelButtonText: '确认关闭'
-        }).then(() => {
-        }).catch(action => {
+      if (this.settings.tabs.is_edit === false) {
+        this.doCloseTab()
+      } else {
+        if (targetName === 'edit_permission' && this.settings.tabs.is_edit) {
+          this.$confirm('您点击了关闭当前页签的操作，请注意保存当前数据。', '确认信息', {
+            distinguishCancelAndClose: true,
+            confirmButtonText: '取消',
+            cancelButtonText: '确认关闭'
+          }).then(() => {
+          }).catch(action => {
           // 右上角X
-          if (action === 'cancel') {
-            // 通知兄弟组件
-            this.doCloseTab()
-          }
-        })
+            if (action === 'cancel') {
+              this.doCloseTab()
+            }
+          })
+        }
       }
     },
     doCloseTab() {

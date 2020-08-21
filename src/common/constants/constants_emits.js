@@ -29,6 +29,7 @@ const EMIT_PERMISSION_DEPT_OPERATE_EDIT = 'global:permission_dept:edit_permissio
 const EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK = 'global:permission_dept:edit_permission_ok'
 const EMIT_PERMISSION_DEPT_LOADING = 'global:permission_dept:getDataList_loading'
 const EMIT_PERMISSION_DEPT_LOADING_OK = 'global:permission_dept:getDataList_loading_ok'
+const EMIT_PERMISSION_DEPT_IS_EDIT = 'global:permission_dept:is_edit'
 
 export default {
   /**
@@ -47,5 +48,6 @@ export default {
   EMIT_PERMISSION_DEPT_OPERATE_EDIT,
   EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK,
   EMIT_PERMISSION_DEPT_LOADING,
-  EMIT_PERMISSION_DEPT_LOADING_OK
+  EMIT_PERMISSION_DEPT_LOADING_OK,
+  EMIT_PERMISSION_DEPT_IS_EDIT
 }
