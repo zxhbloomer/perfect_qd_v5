@@ -224,5 +224,129 @@ export default {
         }
       }
     }
+
+    /**
+     * 查找所有父节点数据，并返回
+     *
+     * @param {*} idField         id 属性字段名称
+     * @param {*} parentIdField   parent_id 属性字段名称
+     * @param {*} node            结点数据
+     * @param {*} tree            父节点数据
+     * @param {*} parentNodes
+     * @param {*} index
+     */
+    Vue.prototype.findAllParent = function(idField, parentIdField, node, tree, parentNodes = [], index = 0) {
+      if (!node || node.parent_id === 0) {
+        return
+      }
+      Vue.prototype.findParent(idField, parentIdField, node, parentNodes, tree)
+      const parntNode = parentNodes[index]
+      Vue.prototype.findAllParent(idField, parentIdField, parntNode, tree, parentNodes, ++index)
+      return parentNodes
+    }
+
+    /**
+     * 查找父节点数据，并返回
+     *
+     * @param {*} idField        id 属性字段名称
+     * @param {*} parentIdField  parent_id 属性字段名称
+     * @param {*} node           结点数据
+     * @param {*} parentNodes    父节点数据
+     * @param {*} tree           树数据
+     */
+    Vue.prototype.findParent = function(idField, parentIdField, node, parentNodes, tree) {
+      for (let i = 0; i < tree.length; i++) {
+        const item = tree[i]
+        if (item[idField] === node[parentIdField]) {
+          parentNodes.push(item)
+          return
+        }
+        if (item.children && item.children.length > 0) {
+          Vue.prototype.findParent(idField, parentIdField, node, parentNodes, item.children)
+        }
+      }
+    }
+
+    /**
+     *
+     * 树中，点击某一节点
+     *  true（选中）：找到父节点、祖父节点设置相应的true
+     *  false（未选中）：找到父节点，循环子节点，查看是否有选中的数据，如果有，父节点为true，如果没有，父节点false
+     *
+     * @param {*} checked_value    是否选中的值：true（选中），false（未选中）
+     * @param {*} idField          主键字段
+     * @param {*} parentIdField    父亲节点主键字段
+     * @param {*} isEnableField    选中字段
+     * @param {*} node             当前结点
+     * @param {*} jsonData         整体结点数据
+     * @param {*} ignoreSubObject  忽略的对象
+     */
+    Vue.prototype.setParentNodeIsEnable = function(checked_value, idField, parentIdField, isEnableField, node, jsonData, ignoreSubObject) {
+      // 如果选中状态为true，查找所有父节点数据，设置为true
+      if (checked_value) {
+        this.findAllParentAndSetData(idField, parentIdField, isEnableField, checked_value, node, jsonData)
+      } else {
+        // 获取所有的父节点和祖父节点
+        const parentNodes = this.findAllParent(idField, parentIdField, node, jsonData)
+        for (let i = 0; i < parentNodes.length; i++) {
+          const items = parentNodes[i]
+          if (items.children.length > 0) {
+            const bro = this.getJsonObjects(items.children, isEnableField, true, ignoreSubObject)
+            if (bro.length === 0) {
+              items.is_enable = false
+            }
+          } else {
+            continue
+          }
+        }
+      }
+    }
+
+    /**
+     * 查找所有父节点数据，设置data
+     * 例如：this.findAllParentAndSetData('menu_id', 'parent_id', 'is_enable', val, row, this.dataJson.listData)
+     *
+     * @param {*} idField         id 属性字段名称
+     * @param {*} parentIdField   parent_id 属性字段名称
+     * @param {*} setDataField    需要设置值的field 属性
+     * @param {*} setDataValue    值
+     * @param {*} node            结点数据
+     * @param {*} tree            父节点数据
+     * @param {*} parentNodes
+     * @param {*} index
+     */
+    Vue.prototype.findAllParentAndSetData = function(idField, parentIdField, setDataField, setDataValue, node, tree, parentNodes = [], index = 0) {
+      if (!node || node.parent_id === 0) {
+        return
+      }
+      Vue.prototype.findParentAndSetData(idField, parentIdField, setDataField, setDataValue, node, parentNodes, tree)
+      const parntNode = parentNodes[index]
+      Vue.prototype.findAllParentAndSetData(idField, parentIdField, setDataField, setDataValue, parntNode, tree, parentNodes, ++index)
+      return parentNodes
+    }
+
+    /**
+     * 查找父节点数据，设置data
+     *
+     * @param {*} idField        id 属性字段名称
+     * @param {*} parentIdField  parent_id 属性字段名称
+     * @param {*} node           结点数据
+     * @param {*} parentNodes    父节点数据
+     * @param {*} tree           树数据
+     */
+    Vue.prototype.findParentAndSetData = function(idField, parentIdField, setDataField, setDataValue, node, parentNodes, tree) {
+      for (let i = 0; i < tree.length; i++) {
+        const item = tree[i]
+        if (item[idField] === node[parentIdField]) {
+          parentNodes.push(item)
+          // 找到了数据，开始设置值
+          item[setDataField] = setDataValue
+          return
+        }
+        if (item.children && item.children.length > 0) {
+          Vue.prototype.findParentAndSetData(idField, parentIdField, setDataField, setDataValue, node, parentNodes, item.children)
+        }
+      }
+    }
   }
 }

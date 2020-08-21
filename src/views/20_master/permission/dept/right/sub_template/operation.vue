@@ -315,8 +315,10 @@ export default {
       }
     },
     handleCheckMenu(val, row) {
-      // 所有的is_enable都设置为传入的值，递归设置
+      // 所有的is_enable都设置为传入的值，递归设置，选择父节点，自动选中所有的子节点，反之则为撤销
       this.setFieldValue2JsonObjects(row, 'is_enable', val, 'function_info')
+      this.setParentNodeIsEnable(val, 'menu_id', 'parent_id', 'is_enable', row, this.dataJson.listData, 'function_info')
+
       // 查找已经勾选的数据
       const _checked_count = this.getJsonObjects(this.dataJson.listData, 'is_enable', true, 'function_info')
       // tableData 第一层只要有在 selection 里面就是全选 dataJson.check_all.checked
@@ -327,6 +329,7 @@ export default {
       head_checkbox.$vnode.componentInstance.value = _checked_count.length === this.dataJson.listDataCount
       head_checkbox.$vnode.componentInstance.indeterminate = _checked_count.length > 0 && _checked_count.length < this.dataJson.listDataCount
     }
+
   }
 }
 </script>
