@@ -352,8 +352,14 @@ export default {
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT, _data => {
       this.settings.tree.disabled = true
     })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO, _data => {
+      this.settings.tree.disabled = true
+    })
     // 操作权限编辑完成后，接收兄弟信息，把tree设置为可用
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK, _data => {
+      this.settings.tree.disabled = false
+    })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO_OK, _data => {
       this.settings.tree.disabled = false
     })
   },

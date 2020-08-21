@@ -127,7 +127,7 @@
         <template v-slot="scope">
           <el-button-group>
             <el-button type="primary" icon="el-icon-edit" @click="handleSetUpOperation(scope.row)">设置</el-button>
-            <el-button type="info" icon="el-icon-search" @click="handleEdit(scope.row)">查看</el-button>
+            <el-button type="info" icon="el-icon-search" @click="handleInfo(scope.row)">查看</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -657,6 +657,30 @@ export default {
     },
     // ------------------编辑弹出框 end--------------------
     // -----------------选择根目录 start------------------
+    handleInfo(val) {
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
+      isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
+        if (response.data) {
+          // 已经设置
+          this.openPermissionInfoTab()
+        } else {
+          // 未设置，报错
+          this.$alert('请点击设置按钮，进行权限设置！', '没有找到权限数据', {
+            confirmButtonText: '关闭',
+            type: 'error'
+          }).then(() => {
+            this.settings.btnShowStatus.showExport = false
+          })
+        }
+      }).finally(() => {
+        this.settings.loading = false
+        // 通知兄弟组件
+        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
+      })
+    },
     handleSetUpOperation(val) {
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
@@ -677,6 +701,17 @@ export default {
         this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
       })
     },
+    // 打开权限查看页面
+    openPermissionInfoTab() {
+      const operate_tab_data = {
+        operate_tab_info: { show: true, name: '正在查看操作权限：【' + this.dataJson.currentJson.name + '】' },
+        operate_tab_header_info: { info: this.dataJson.head.info },
+        permission: { permissionId: this.dataJson.currentJson.id }
+      }
+      // 通知兄弟组件
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO, operate_tab_data)
+    },
     // 打开权限编辑页面
     openPermissionEditTab() {
       const operate_tab_data = {
@@ -687,9 +722,6 @@ export default {
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT)
       this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT, operate_tab_data)
-      // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
     },
     // 页面关闭后操作
     handleOperateStepOneDialogCloseMeOk(val) {

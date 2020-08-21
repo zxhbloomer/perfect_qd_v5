@@ -108,6 +108,13 @@ export default {
       this.dataJson.permissionId = _data.permission.permissionId
       this.settings.tabs.is_edit = false
     })
+    this.$on(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO, _data => {
+      this.dataJson.tab = _data.operate_tab_info
+      this.settings.tabs.activeName = 'edit_permission'
+      this.dataJson.operation_head_info = _data.operate_tab_header_info.info
+      this.dataJson.permissionId = _data.permission.permissionId
+      this.settings.tabs.is_edit = false
+    })
     // 是否编辑
     this.$on(this.EMITS.EMIT_PERMISSION_DEPT_IS_EDIT, _data => {
       this.settings.tabs.is_edit = _data
@@ -144,6 +151,8 @@ export default {
       this.settings.tabs.activeName = 'main'
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK)
       this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT_OK, null)
+      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO_OK)
+      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO_OK, null)
     }
   }
 }
