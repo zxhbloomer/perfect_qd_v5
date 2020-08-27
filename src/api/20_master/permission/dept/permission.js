@@ -98,25 +98,25 @@ export function enableApi(data) {
   })
 }
 
-/**
-   * 部门权限表数据获取系统菜单根节点
-   * @param {*} data
-   */
-export function getSystemMenuRootListApi(data) {
-  return request({
-    url: '/api/v1/permission/dept/get_sys_menu_root_node',
-    method: 'post'
-  })
-}
+// /**
+//    * 部门权限表数据获取系统菜单根节点
+//    * @param {*} data
+//    */
+// export function getSystemMenuRootListApi(data) {
+//   return request({
+//     url: '/api/v1/permission/dept/get_sys_menu_root_node',
+//     method: 'post'
+//   })
+// }
 
-/**
-   * 判断是否已经选择过，默认菜单进行编辑
-   * @param {*} data
-   */
-export function isAlreadySetMenuIdApi(data) {
-  return request({
-    url: '/api/v1/permission/dept/setted',
-    method: 'post',
-    data
-  })
-}
+// /**
+//    * 判断是否已经选择过，默认菜单进行编辑
+//    * @param {*} data
+//    */
+// export function isAlreadySetMenuIdApi(data) {
+//   return request({
+//     url: '/api/v1/permission/dept/setted',
+//     method: 'post',
+//     data
+//   })
+// }

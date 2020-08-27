@@ -21,7 +21,7 @@
       </el-form-item>
     </el-form>
     <el-button-group v-show="!meDialogStatus.dialogStatus">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" :loading="settings.listLoading" @click="handleInsert">新增菜单组</el-button>
+      <el-button :disabled="!settings.btnShowStatus.showInsert" type="primary" icon="el-icon-circle-plus-outline" :loading="settings.listLoading" @click="handleInsert">新增菜单组</el-button>
       <el-button :disabled="!settings.btnShowStatus.showAddTopNav" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleAddTopNav">添加顶部导航栏</el-button>
       <el-button :disabled="!settings.btnShowStatus.showAddSubNode" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleAddSubNode">添加子菜单-结点</el-button>
       <el-button :disabled="!settings.btnShowStatus.showAddSubMenu" type="primary" icon="el-icon-edit-outline" :loading="settings.listLoading" @click="handleAddSubMenu">添加子菜单-页面</el-button>
@@ -265,6 +265,7 @@ export default {
         sortOrders: deepCopy(this.PARAMETERS.SORT_PARA),
         // 按钮状态
         btnShowStatus: {
+          showInsert: false,
           showUpdate: false,
           showAddTopNav: false,
           // 添加子菜单-结点：按钮
@@ -392,6 +393,7 @@ export default {
   },
   methods: {
     initShow() {
+      this.settings.btnShowStatus.showInsert = true
       // 初始化查询
       this.getDataList()
     },
@@ -497,6 +499,10 @@ export default {
         this.dataJson.paging = response.data.menu_data
         this.dataJson.paging.records = {}
       }).finally(() => {
+        if (this.dataJson.listData && this.dataJson.listData.length) {
+          // 考虑当且仅当每个租户只能有一个系统菜单
+          this.settings.btnShowStatus.showInsert = false
+        }
         this.dataJson.currentJson = undefined
         this.settings.listLoading = false
         this.$refs.multipleTable.setCurrentRow()

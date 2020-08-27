@@ -150,14 +150,14 @@
       @closeMeCancel="handleCloseDialogOneCancel"
     />
 
-    <operate-step-one-dialog
+    <!-- <operate-step-one-dialog
       v-if="popSettings.two.visible"
       :visible="popSettings.two.visible"
       :dialog-status="popSettings.two.props.dialogStatus"
       :data="popSettings.two.props.data"
       @closeMeOk="handleOperateStepOneDialogCloseMeOk"
       @closeMeCancel="handleOperateStepOneDialogCloseMeCancel"
-    />
+    /> -->
 
     <iframe id="refIframe" ref="refIframe" scrolling="no" frameborder="0" style="display:none" name="refIframe">x</iframe>
   </div>
@@ -200,16 +200,16 @@
 <script>
 import '@/styles/org_png.scss'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { getListApi, deleteApi, enableApi, isAlreadySetMenuIdApi } from '@/api/20_master/permission/dept/permission'
-import { setSystemMenuData2PermissionDataApi } from '@/api/20_master/permission/operation/operation'
+import { getListApi, deleteApi, enableApi } from '@/api/20_master/permission/dept/permission'
+// import { setSystemMenuData2PermissionDataApi } from '@/api/20_master/permission/operation/operation'
 import deepCopy from 'deep-copy'
 import DeleteTypeNormal from '@/components/00_dict/select/SelectDeleteTypeNormal'
 import Pagination from '@/components/Pagination'
 import editDialog from '../sub_template/dialog/permission_edit'
-import operateStepOneDialog from '../sub_template/dialog/operate_step_one'
+// import operateStepOneDialog from '../sub_template/dialog/operate_step_one'
 
 export default {
-  components: { Pagination, DeleteTypeNormal, editDialog, operateStepOneDialog },
+  components: { Pagination, DeleteTypeNormal, editDialog },
   directives: { elDragDialog },
   mixins: [],
   props: {
@@ -272,15 +272,15 @@ export default {
             data: {},
             dialogStatus: ''
           }
-        },
-        two: {
-          visible: false,
-          props: {
-            id: undefined,
-            data: {},
-            dialogStatus: ''
-          }
         }
+        // two: {
+        //   visible: false,
+        //   props: {
+        //     id: undefined,
+        //     data: {},
+        //     dialogStatus: ''
+        //   }
+        // }
       }
     }
   },
@@ -658,94 +658,56 @@ export default {
     // ------------------编辑弹出框 end--------------------
     // -----------------选择根目录 start------------------
     handleInfo(val) {
-      // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
-      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
-      isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
-        if (response.data) {
-          // 已经设置
-          this.openPermissionInfoTab()
-        } else {
-          // 未设置，报错
-          this.$alert('请点击设置按钮，进行权限设置！', '没有找到权限数据', {
-            confirmButtonText: '关闭',
-            type: 'error'
-          }).then(() => {
-            this.settings.btnShowStatus.showExport = false
-          })
-        }
-      }).finally(() => {
-        this.settings.loading = false
-        // 通知兄弟组件
-        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-      })
+      this.openPermissionInfoTab(val)
     },
     handleSetUpOperation(val) {
-      // 通知兄弟组件
-      this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
-      this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING)
-      isAlreadySetMenuIdApi({ 'id': val.id }).then(response => {
-        if (response.data) {
-          // 已经设置
-          this.openPermissionEditTab()
-        } else {
-          // 未设置
-          this.popSettings.two.props.data = this.dataJson.listData
-          this.popSettings.two.visible = true
-        }
-      }).finally(() => {
-        this.settings.loading = false
-        // 通知兄弟组件
-        this.$off(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-        this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_LOADING_OK)
-      })
+      this.openPermissionEditTab(val)
     },
     // 打开权限查看页面
-    openPermissionInfoTab() {
+    openPermissionInfoTab(val) {
       const operate_tab_data = {
-        operate_tab_info: { show: true, name: '正在查看操作权限：【' + this.dataJson.currentJson.name + '】' },
+        operate_tab_info: { show: true, name: '正在查看操作权限：【' + val.name + '】' },
         operate_tab_header_info: { info: this.dataJson.head.info },
-        permission: { permissionId: this.dataJson.currentJson.id }
+        permission: { permissionId: val.id }
       }
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO)
       this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_INFO, operate_tab_data)
     },
     // 打开权限编辑页面
-    openPermissionEditTab() {
+    openPermissionEditTab(val) {
       const operate_tab_data = {
-        operate_tab_info: { show: true, name: '正在编辑操作权限：【' + this.dataJson.currentJson.name + '】' },
+        operate_tab_info: { show: true, name: '正在编辑操作权限：【' + val.name + '】' },
         operate_tab_header_info: { info: this.dataJson.head.info },
-        permission: { permissionId: this.dataJson.currentJson.id }
+        permission: { permissionId: val.id }
       }
       // 通知兄弟组件
       this.$off(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT)
       this.$emit(this.EMITS.EMIT_PERMISSION_DEPT_OPERATE_EDIT, operate_tab_data)
-    },
-    // 页面关闭后操作
-    handleOperateStepOneDialogCloseMeOk(val) {
-      // 执行复制逻辑
-      this.settings.loading = true
-      setSystemMenuData2PermissionDataApi({ 'permission_id': this.dataJson.currentJson.id, 'root_id': val.select }).then((_data) => {
-        // 处理成功后，打开权限编辑页面
-        this.handleSetUpOperation(this.dataJson.currentJson)
-      }, (_error) => {
-        this.$notify({
-          title: '处理失败',
-          message: _error.message,
-          type: 'error',
-          duration: this.settings.duration
-        })
-      }).finally(() => {
-        this.settings.loading = false
-      })
-      // 关闭页面
-      this.popSettings.two.visible = false
-    },
-    handleOperateStepOneDialogCloseMeCancel() {
-      this.popSettings.two.visible = false
     }
+    // // 页面关闭后操作
+    // handleOperateStepOneDialogCloseMeOk(val) {
+    //   // 执行复制逻辑
+    //   this.settings.loading = true
+    //   setSystemMenuData2PermissionDataApi({ 'permission_id': this.dataJson.currentJson.id, 'root_id': val.select }).then((_data) => {
+    //     // 处理成功后，打开权限编辑页面
+    //     this.handleSetUpOperation(this.dataJson.currentJson)
+    //   }, (_error) => {
+    //     this.$notify({
+    //       title: '处理失败',
+    //       message: _error.message,
+    //       type: 'error',
+    //       duration: this.settings.duration
+    //     })
+    //   }).finally(() => {
+    //     this.settings.loading = false
+    //   })
+    //   // 关闭页面
+    //   this.popSettings.two.visible = false
+    // },
+    // handleOperateStepOneDialogCloseMeCancel() {
+    //   this.popSettings.two.visible = false
+    // }
     // -----------------选择根目录 end------------------
   }
 }

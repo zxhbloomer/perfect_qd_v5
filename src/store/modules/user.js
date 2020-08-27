@@ -53,6 +53,7 @@ const actions = {
   getUserInfoAction({ commit, state }) {
     return new Promise((resolve, reject) => {
       getUserInfoApi(state.token).then(response => {
+        debugger
         const { data } = response
 
         if (!data) {

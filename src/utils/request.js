@@ -122,9 +122,11 @@ service.interceptors.response.use(
           }
           break
         case 406:
+          // 不能接受该请求
           showMsg = error.response.data.message
           break
         case 500:
+          // 系统错误
           if (JSON.stringify(error.response.data).includes('ECONNREFUSED')) {
             showMsg = '请联系管理员，服务器没有响应。'
           } else {
@@ -137,6 +139,7 @@ service.interceptors.response.use(
           }
           break
         case 503:
+          // 重复提交报错
           showMsg = error.response.data.message
           break
       }
