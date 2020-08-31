@@ -96,7 +96,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes({ commit }, roles) {
+  getTopNavAndRoutes({ commit }, roles, permission_data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
@@ -131,7 +131,10 @@ const actions = {
           routers: asyncRoutes
         }
       ]
+      debugger
 
+      console.log(roles)
+      console.log(permission_data)
       // 循环格式化菜单
       for (const item of _topNav) {
         if (item.type === 'T') {
