@@ -58,6 +58,9 @@ const mutations = {
 }
 
 const actions = {
+  /**
+   * generateRoutes 该方法为vue admin 自带方法，暂时注释掉，不使用
+   *
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
       // let accessedRoutes
@@ -83,11 +86,16 @@ const actions = {
       resolve(ar)
     })
   },
+  */
   setRoutes({ commit }, routers) {
     // 设置到vuex中是菜单树
     commit('SET_ROUTES', routers)
   },
-  // 获取路由
+  /**
+   * getTopNavAndRoutes，菜单设置入口点
+   * @param {*} param0
+   * @param {*} roles
+   */
   getTopNavAndRoutes({ commit }, roles) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏

@@ -8,7 +8,10 @@ const state = {
   avatar: '',
   introduction: '',
   roles: [],
-  session_bean: {}
+  // session信息
+  session_bean: {},
+  // 菜单权限和操作权限信息
+  permission_data: {}
 }
 
 const mutations = {
@@ -29,6 +32,9 @@ const mutations = {
   },
   SET_SESSION_BEAN: (state, session_bean) => {
     state.session_bean = session_bean
+  },
+  SET_PERMISSION_DATA: (state, permission_data) => {
+    state.permission_data = permission_data
   }
 }
 
@@ -53,25 +59,24 @@ const actions = {
   getUserInfoAction({ commit, state }) {
     return new Promise((resolve, reject) => {
       getUserInfoApi(state.token).then(response => {
-        debugger
         const { data } = response
 
         if (!data) {
           reject('验证失败，请重新登录')
         }
 
-        const { roles, name, avatar, introduction, user_session_bean } = data
+        const { roles, name, avatar, introduction, user_session_bean, permission_data } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
         commit('SET_SESSION_BEAN', user_session_bean)
+        commit('SET_PERMISSION_DATA', permission_data)
         resolve(data)
       }).catch(error => {
         reject(error)

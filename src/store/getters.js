@@ -19,6 +19,8 @@ const getters = {
   selectedDataJson: state => state.popUpSearchDialog.selectedDataJson,
   formatRouter: state => state.formatRouter.isdo,
   /** user session bean */
-  userSessionBean: state => state.user.session_bean
+  userSessionBean: state => state.user.session_bean,
+  /** 菜单权限和操作权限信息 */
+  userPermissionData: state => state.user.permission_data
 }
 export default getters
