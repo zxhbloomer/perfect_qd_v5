@@ -454,7 +454,7 @@ export function convertToOneRouter(orignal, _path) {
   let path = _path === undefined ? '' : _path + '/'
   for (const item of orignal) {
     path = path + item.path
-    if (item.children) {
+    if (item.children && item.children.length > 0) {
       // convertToOneRouter(item.children, path)
       if (item.meta.fulltitle === undefined) {
         item.meta.fulltitle = []
@@ -462,11 +462,17 @@ export function convertToOneRouter(orignal, _path) {
       item.meta.fulltitle.push(item.meta.title)
       findChilds(item.children, path, item, asyncRoutesConvertToOneRouter)
     } else {
+      // 删除对象中的children属性
+      delete item.children
       item.path = path
       if (item.meta.fulltitle === undefined) {
         item.meta.fulltitle = []
       }
       item.meta.fulltitle.push(item.meta.title)
+      // 读取component
+      if (typeof item.component !== 'object') {
+        item.component = loadView([item.component])
+      }
       asyncRoutesConvertToOneRouter[0].children.push(item)
     }
   }
@@ -477,7 +483,7 @@ export function convertToOneRouter(orignal, _path) {
 function findChilds(children, _path, _parent, _childrens) {
   let path = _path === undefined ? '' : _path + '/'
   for (const _childItem of children) {
-    if (_childItem.children) {
+    if (_childItem.children && _childItem.children.length > 0) {
       path = _path + '/' + _childItem.path
       if (_childItem.meta.fulltitle === undefined) {
         _childItem.meta.fulltitle = []
@@ -486,6 +492,8 @@ function findChilds(children, _path, _parent, _childrens) {
       // _childItem.meta.fulltitle.push(_childItem.meta.title)
       findChilds(_childItem.children, path, _childItem, _childrens)
     } else {
+      // 删除对象中的children属性
+      delete _childItem.children
       path = _path === undefined ? '' : _path + '/'
       _childItem.path = path.endsWith('/') ? (path + _childItem.path) : (path + '/' + _childItem.path)
       if (_childItem.meta.fulltitle === undefined) {
@@ -493,9 +501,17 @@ function findChilds(children, _path, _parent, _childrens) {
       }
       // _childItem.meta.fulltitle.push(_childItem.meta.title)
       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
+      // 读取component
+      if (typeof _childItem.component !== 'object') {
+        _childItem.component = loadView(_childItem.component)
+      }
       _childrens[0].children.push(_childItem)
     }
   }
+}
+
+export const loadView = (view) => { // 路由懒加载
+  return () => Promise.resolve(require(view).default)
 }
 
 // // 按全路径的方式来设置，并返回

@@ -1,6 +1,5 @@
-import { asyncRoutes, asyncRoutes2 } from '@/router'
+import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes } from '@/router'
 import deepcopy from 'deep-copy'
-import Layout from '@/layout'
 
 // import { constantRoutes } from '@/router'
 
@@ -17,67 +16,67 @@ function hasPermission(roles, route) {
   }
 }
 
-// 按一级路由的方式来设置，并返回
-function convertToOneRouter(orignal, _path) {
-  // 初始化
-  let path = _path === undefined ? '' : _path + '/'
-  for (const item of orignal) {
-    const _meta = {
-      title: item.meta_title,
-      fulltitle: [item.meta_title],
-      icon: item.meta_icon,
-      affix: item.affix
-    }
-    item['meta'] = _meta
-    path = path + item.path
-    if (item.children && item.children.length > 0) {
-      if (item.meta.fulltitle === undefined) {
-        item.meta.fulltitle = []
-      }
-      item.meta.fulltitle.push(item.meta.title)
-      findChilds(item.children, path, item, asyncRoutesConvertToOneRouter)
-    } else {
-      item.path = path
-      if (item.meta.fulltitle === undefined) {
-        item.meta.fulltitle = []
-      }
-      item.meta.fulltitle.push(item.meta.title)
-      asyncRoutesConvertToOneRouter[0].children.push(item)
-    }
-  }
-  return asyncRoutesConvertToOneRouter
-}
-// 查找子结点
-function findChilds(children, _path, _parent, _childrens) {
-  let path = _path === undefined ? '' : _path + '/'
-  for (const _childItem of children) {
-    const _meta = {
-      title: _childItem.meta_title,
-      fulltitle: [_childItem.meta_title],
-      icon: _childItem.meta_icon,
-      affix: _childItem.affix
-    }
-    _childItem['meta'] = _meta
-    if (_childItem.children && _childItem.children.length > 0) {
-      path = _path + '/' + _childItem.path
-      if (_childItem.meta.fulltitle === undefined) {
-        _childItem.meta.fulltitle = []
-      }
-      _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
-      // _childItem.meta.fulltitle.push(_childItem.meta.title)
-      findChilds(_childItem.children, path, _childItem, _childrens)
-    } else {
-      path = _path === undefined ? '' : _path + '/'
-      _childItem.path = path.endsWith('/') ? (path + _childItem.path) : (path + '/' + _childItem.path)
-      if (_childItem.meta.fulltitle === undefined) {
-        _childItem.meta.fulltitle = []
-      }
-      // _childItem.meta.fulltitle.push(_childItem.meta.title)
-      _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
-      _childrens[0].children.push(_childItem)
-    }
-  }
-}
+// // 按一级路由的方式来设置，并返回
+// function convertToOneRouter(orignal, _path) {
+//   // 初始化
+//   let path = _path === undefined ? '' : _path + '/'
+//   for (const item of orignal) {
+//     const _meta = {
+//       title: item.meta_title,
+//       fulltitle: [item.meta_title],
+//       icon: item.meta_icon,
+//       affix: item.affix
+//     }
+//     item['meta'] = _meta
+//     path = path + item.path
+//     if (item.children && item.children.length > 0) {
+//       if (item.meta.fulltitle === undefined) {
+//         item.meta.fulltitle = []
+//       }
+//       item.meta.fulltitle.push(item.meta.title)
+//       findChilds(item.children, path, item, asyncRoutesConvertToOneRouter)
+//     } else {
+//       item.path = path
+//       if (item.meta.fulltitle === undefined) {
+//         item.meta.fulltitle = []
+//       }
+//       item.meta.fulltitle.push(item.meta.title)
+//       asyncRoutesConvertToOneRouter[0].children.push(item)
+//     }
+//   }
+//   return asyncRoutesConvertToOneRouter
+// }
+// // 查找子结点
+// function findChilds(children, _path, _parent, _childrens) {
+//   let path = _path === undefined ? '' : _path + '/'
+//   for (const _childItem of children) {
+//     const _meta = {
+//       title: _childItem.meta_title,
+//       fulltitle: [_childItem.meta_title],
+//       icon: _childItem.meta_icon,
+//       affix: _childItem.affix
+//     }
+//     _childItem['meta'] = _meta
+//     if (_childItem.children && _childItem.children.length > 0) {
+//       path = _path + '/' + _childItem.path
+//       if (_childItem.meta.fulltitle === undefined) {
+//         _childItem.meta.fulltitle = []
+//       }
+//       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
+//       // _childItem.meta.fulltitle.push(_childItem.meta.title)
+//       findChilds(_childItem.children, path, _childItem, _childrens)
+//     } else {
+//       path = _path === undefined ? '' : _path + '/'
+//       _childItem.path = path.endsWith('/') ? (path + _childItem.path) : (path + '/' + _childItem.path)
+//       if (_childItem.meta.fulltitle === undefined) {
+//         _childItem.meta.fulltitle = []
+//       }
+//       // _childItem.meta.fulltitle.push(_childItem.meta.title)
+//       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
+//       _childrens[0].children.push(_childItem)
+//     }
+//   }
+// }
 
 /**
  * Filter asynchronous routing tables by recursion
@@ -112,7 +111,7 @@ const mutations = {
   // 添加当前路由
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
-    // state.routes = constantRoutes.concat(routes)
+    state.routes = constantRoutes.concat(routes)
   },
   // 添加顶部导航栏
   SET_TOP_NAV: (state, topNav) => {
@@ -120,14 +119,14 @@ const mutations = {
   }
 }
 
-const asyncRoutesConvertToOneRouter = [
-  {
-    path: '/async',
-    component: Layout,
-    redirect: 'noRedirect',
-    children: []
-  }
-]
+// const asyncRoutesConvertToOneRouter = [
+//   {
+//     path: '/async',
+//     component: Layout,
+//     redirect: 'noRedirect',
+//     children: []
+//   }
+// ]
 
 const actions = {
   /**
@@ -183,22 +182,19 @@ const actions = {
          */
         if (item.type === 'T') {
           var tmpTopNav = {
-            index: item.id,
+            index: item.id + '_',
             type: item.type,
-            meta: {
-              icon: item.meta_icon,
-              name: item.meta_title
-            },
+            meta: item.meta,
             menus: null,
             routers: item.children
           }
           var _routers = deepcopy(tmpTopNav.routers)
           const convertData = convertToOneRouter(_routers)
+
           tmpTopNav.menus = convertData
           topNavData.push(tmpTopNav)
         }
       }
-      debugger
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', topNavData)
       commit('SET_ROUTES', topNavData[0].routers)
@@ -255,9 +251,11 @@ const actions = {
           item.menus = convertData
         }
       }
+
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', _topNav)
       commit('SET_ROUTES', _topNav[0].routers)
+      debugger
       // 返回的是一级路由，设置到router中
       resolve(_topNav[0].menus)
     })
