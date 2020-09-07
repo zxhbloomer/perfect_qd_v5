@@ -108,6 +108,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="默认打开页面：" prop="default_open">
+              <el-switch
+                v-model="dataJson.tempJson.default_open"
+                active-text="默认打开"
+                inactive-text="未设置"
+                :disabled="!isSelectedPage"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="页面文件路径：" prop="component">
               <el-input v-model.trim="dataJson.tempJson.component" clearable show-word-limit disabled />
             </el-form-item>

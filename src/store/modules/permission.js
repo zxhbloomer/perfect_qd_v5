@@ -1,7 +1,5 @@
-import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes } from '@/router'
+import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDynamicMenu, setDefaultPageStatic } from '@/router'
 import deepcopy from 'deep-copy'
-
-// import { constantRoutes } from '@/router'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -15,68 +13,6 @@ function hasPermission(roles, route) {
     return true
   }
 }
-
-// // 按一级路由的方式来设置，并返回
-// function convertToOneRouter(orignal, _path) {
-//   // 初始化
-//   let path = _path === undefined ? '' : _path + '/'
-//   for (const item of orignal) {
-//     const _meta = {
-//       title: item.meta_title,
-//       fulltitle: [item.meta_title],
-//       icon: item.meta_icon,
-//       affix: item.affix
-//     }
-//     item['meta'] = _meta
-//     path = path + item.path
-//     if (item.children && item.children.length > 0) {
-//       if (item.meta.fulltitle === undefined) {
-//         item.meta.fulltitle = []
-//       }
-//       item.meta.fulltitle.push(item.meta.title)
-//       findChilds(item.children, path, item, asyncRoutesConvertToOneRouter)
-//     } else {
-//       item.path = path
-//       if (item.meta.fulltitle === undefined) {
-//         item.meta.fulltitle = []
-//       }
-//       item.meta.fulltitle.push(item.meta.title)
-//       asyncRoutesConvertToOneRouter[0].children.push(item)
-//     }
-//   }
-//   return asyncRoutesConvertToOneRouter
-// }
-// // 查找子结点
-// function findChilds(children, _path, _parent, _childrens) {
-//   let path = _path === undefined ? '' : _path + '/'
-//   for (const _childItem of children) {
-//     const _meta = {
-//       title: _childItem.meta_title,
-//       fulltitle: [_childItem.meta_title],
-//       icon: _childItem.meta_icon,
-//       affix: _childItem.affix
-//     }
-//     _childItem['meta'] = _meta
-//     if (_childItem.children && _childItem.children.length > 0) {
-//       path = _path + '/' + _childItem.path
-//       if (_childItem.meta.fulltitle === undefined) {
-//         _childItem.meta.fulltitle = []
-//       }
-//       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
-//       // _childItem.meta.fulltitle.push(_childItem.meta.title)
-//       findChilds(_childItem.children, path, _childItem, _childrens)
-//     } else {
-//       path = _path === undefined ? '' : _path + '/'
-//       _childItem.path = path.endsWith('/') ? (path + _childItem.path) : (path + '/' + _childItem.path)
-//       if (_childItem.meta.fulltitle === undefined) {
-//         _childItem.meta.fulltitle = []
-//       }
-//       // _childItem.meta.fulltitle.push(_childItem.meta.title)
-//       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
-//       _childrens[0].children.push(_childItem)
-//     }
-//   }
-// }
 
 /**
  * Filter asynchronous routing tables by recursion
@@ -119,45 +55,7 @@ const mutations = {
   }
 }
 
-// const asyncRoutesConvertToOneRouter = [
-//   {
-//     path: '/async',
-//     component: Layout,
-//     redirect: 'noRedirect',
-//     children: []
-//   }
-// ]
-
 const actions = {
-  /**
-   * generateRoutes 该方法为vue admin 自带方法，暂时注释掉，不使用
-   *
-  generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
-      // let accessedRoutes
-      // if (roles.includes('admin')) {
-      //   accessedRoutes = asyncRoutes || []
-      // } else {
-      //   accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      // }
-      // commit('SET_ROUTES', accessedRoutes)
-      // resolve(accessedRoutes)
-      // 获取动态路由
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      var accessedRoutesCopy = deepcopy(asyncRoutes)
-      const ar = convertToOneRouter(accessedRoutesCopy)
-      // 设置到vuex中是菜单树
-      commit('SET_ROUTES', accessedRoutes)
-      // 返回的是一级路由，设置到router中
-      resolve(ar)
-    })
-  },
-  */
   setRoutes({ commit }, routers) {
     // 设置到vuex中是菜单树
     commit('SET_ROUTES', routers)
@@ -167,7 +65,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -181,8 +79,8 @@ const actions = {
          * P: page
          */
         if (item.type === 'T') {
-          var tmpTopNav = {
-            index: item.id + '_',
+          const tmpTopNav = {
+            index: item.id + '',
             type: item.type,
             meta: item.meta,
             menus: null,
@@ -190,14 +88,17 @@ const actions = {
           }
           var _routers = deepcopy(tmpTopNav.routers)
           const convertData = convertToOneRouter(_routers)
-
           tmpTopNav.menus = convertData
           topNavData.push(tmpTopNav)
         }
       }
+      console.log(JSON.stringify(topNavData))
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', topNavData)
       commit('SET_ROUTES', topNavData[0].routers)
+      debugger
+      // 设置默认菜单
+      setDynamicMenu(topNavData[0].routers, _data.permission_data.default_page)
       // 返回的是一级路由，设置到router中
       resolve(topNavData[0].menus)
     })
@@ -207,7 +108,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
@@ -251,11 +152,11 @@ const actions = {
           item.menus = convertData
         }
       }
-
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', _topNav)
       commit('SET_ROUTES', _topNav[0].routers)
-      debugger
+      // 设置默认菜单
+      setDefaultPageStatic(_data.permission_data.default_page)
       // 返回的是一级路由，设置到router中
       resolve(_topNav[0].menus)
     })

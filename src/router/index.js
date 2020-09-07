@@ -44,18 +44,7 @@ Router.prototype.push = function push(location, onResolve, onReject) {
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  // {
-  //   path: '/redirect',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [
-  //     {
-  //       path: '/redirect/:path*',
-  //       component: () => import('@/views/redirect/index')
-  //     }
-  //   ]
-  // },
+export let constantRoutes = [
   {
     path: '/password_reset',
     component: () => import('@/views/login/index'),
@@ -86,10 +75,24 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   name: 'P00000070', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
+  //   children: [
+  //     {
+  //       path: 'dashboard',
+  //       component: () => import('@/views/01_dashboard/index'),
+  //       name: 'Dashboard',
+  //       meta: { title: '首页', icon: 'dashboard', affix: true, fulltitle: ['首页'] }
+  //     }
+  //   ]
+  // }
   {
-    path: '/',
+    path: '',
     component: Layout,
-    redirect: 'dashboard',
+    redirect: '/dashboard',
     name: 'P00000070', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
     children: [
       {
@@ -447,6 +450,38 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+export function setDynamicMenu(routersList, default_page) {
+  const default_page_router = {
+    path: '/',
+    component: Layout,
+    redirect: default_page
+  }
+  constantRoutes.push(default_page_router)
+  debugger
+  const tmp = constantRoutes.concat(routersList)
+  constantRoutes = tmp
+  resetRouter()
+}
+
+export function setDefaultPageStatic(page) {
+  const default_page = {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'P00000070', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/01_dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: '首页', icon: 'dashboard', affix: true, fulltitle: ['首页'] }
+      }
+    ]
+  }
+  constantRoutes.push(default_page)
+  resetRouter()
+}
+
 // 按一级路由的方式来设置，并返回
 export function convertToOneRouter(orignal, _path) {
   // 初始化
@@ -470,7 +505,7 @@ export function convertToOneRouter(orignal, _path) {
       }
       item.meta.fulltitle.push(item.meta.title)
       // 读取component
-      if (typeof item.component !== 'object') {
+      if (typeof item.component === 'string') {
         item.component = loadView([item.component])
       }
       asyncRoutesConvertToOneRouter[0].children.push(item)
@@ -502,7 +537,7 @@ function findChilds(children, _path, _parent, _childrens) {
       // _childItem.meta.fulltitle.push(_childItem.meta.title)
       _childItem.meta.fulltitle = [..._parent.meta.fulltitle, _childItem.meta.title]
       // 读取component
-      if (typeof _childItem.component !== 'object') {
+      if (typeof _childItem.component === 'string') {
         _childItem.component = loadView(_childItem.component)
       }
       _childrens[0].children.push(_childItem)

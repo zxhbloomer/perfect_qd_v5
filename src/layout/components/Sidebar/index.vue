@@ -14,6 +14,7 @@
             :collapse-transition="false"
             mode="vertical"
           >
+            111{{ routers_data }}aaa
             <sidebar-item v-for="route in routers_data" :key="route.path" :item="route" :base-path="route.path" />
           </el-menu>
         </div>
@@ -92,6 +93,7 @@ export default {
   },
   created() {
     this.routers_data = deepCopy(this.permission_routes)
+    console.log(this.routers_data)
   }
 }
 </script>
