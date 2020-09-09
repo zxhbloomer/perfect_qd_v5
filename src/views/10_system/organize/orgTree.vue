@@ -19,7 +19,7 @@
         node-key="id"
         default-expand-all
       >
-        <span v-slot="{ node, data }" class="custom-tree-node">
+        <template v-slot="{ node, data }" class="custom-tree-node">
           <span>{{ node.label }}</span>
           <span>
             <el-dropdown
@@ -60,7 +60,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </span>
-        </span>
+        </template>
       </el-tree>
     </div>
   </div>

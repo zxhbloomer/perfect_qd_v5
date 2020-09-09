@@ -44,7 +44,7 @@ Router.prototype.push = function push(location, onResolve, onReject) {
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export let constantRoutes = [
+export const constantRoutes = [
   {
     path: '/password_reset',
     component: () => import('@/views/login/index'),
@@ -74,7 +74,7 @@ export let constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
   // {
   //   path: '/',
   //   component: Layout,
@@ -89,20 +89,6 @@ export let constantRoutes = [
   //     }
   //   ]
   // }
-  {
-    path: '',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'P00000070', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/01_dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true, fulltitle: ['首页'] }
-      }
-    ]
-  }
 ]
 
 export const asyncRoutes = [
@@ -450,19 +436,6 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-export function setDynamicMenu(routersList, default_page) {
-  const default_page_router = {
-    path: '/',
-    component: Layout,
-    redirect: default_page
-  }
-  constantRoutes.push(default_page_router)
-  debugger
-  const tmp = constantRoutes.concat(routersList)
-  constantRoutes = tmp
-  resetRouter()
-}
-
 export function setDefaultPageStatic(page) {
   const default_page = {
     path: '/',
@@ -480,6 +453,20 @@ export function setDefaultPageStatic(page) {
   }
   constantRoutes.push(default_page)
   resetRouter()
+}
+
+export function deepRecursiveLoadComponent(obj) {
+  for (var i in obj) {
+    if (!obj.hasOwnProperty(i)) continue
+    if (typeof obj[i] === 'object') {
+      deepRecursiveLoadComponent(obj[i])
+    } else {
+      if (i === 'component') {
+        obj[i] = loadView(obj[i])
+      }
+    }
+  }
+  return obj
 }
 
 // 按一级路由的方式来设置，并返回
@@ -506,7 +493,7 @@ export function convertToOneRouter(orignal, _path) {
       item.meta.fulltitle.push(item.meta.title)
       // 读取component
       if (typeof item.component === 'string') {
-        item.component = loadView([item.component])
+        item.component = loadView(item.component)
       }
       asyncRoutesConvertToOneRouter[0].children.push(item)
     }
@@ -546,7 +533,13 @@ function findChilds(children, _path, _parent, _childrens) {
 }
 
 export const loadView = (view) => { // 路由懒加载
-  return () => Promise.resolve(require(view).default)
+  // return () => Promise.resolve(require(view).default)
+  if (view === 'Layout') {
+    return Layout
+  } else {
+    return (resolve) => require([`@/views${view}`], resolve)
+  }
+  // return (resolve) => require([view], resolve)
 }
 
 // // 按全路径的方式来设置，并返回

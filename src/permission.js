@@ -41,6 +41,7 @@ router.beforeEach(async(to, from, next) => {
           // 获取路由处理
           // const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           const accessRoutes = await store.dispatch('permission/getTopNavAndRoutes', { roles: roles, permission_data: permission_data })
+          debugger
           // 动态添加路由
           router.addRoutes(accessRoutes)
 

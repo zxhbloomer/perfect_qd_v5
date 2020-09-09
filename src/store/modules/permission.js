@@ -1,4 +1,4 @@
-import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDynamicMenu, setDefaultPageStatic } from '@/router'
+import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDefaultPageStatic, deepRecursiveLoadComponent } from '@/router'
 import deepcopy from 'deep-copy'
 
 /**
@@ -65,7 +65,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -73,6 +73,8 @@ const actions = {
       const _topNav = _data.permission_data.user_permission_menu
       // 循环格式化菜单
       for (const item of _topNav[0].children) {
+        // 递归循环，读取component
+        deepRecursiveLoadComponent(item)
         /**
          * R: 根节点
          * T: 顶部导航栏
@@ -84,21 +86,17 @@ const actions = {
             type: item.type,
             meta: item.meta,
             menus: null,
-            routers: item.children
+            routers: item
           }
           var _routers = deepcopy(tmpTopNav.routers)
-          const convertData = convertToOneRouter(_routers)
+          const convertData = convertToOneRouter(_routers.children)
           tmpTopNav.menus = convertData
           topNavData.push(tmpTopNav)
         }
       }
-      console.log(JSON.stringify(topNavData))
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', topNavData)
       commit('SET_ROUTES', topNavData[0].routers)
-      debugger
-      // 设置默认菜单
-      setDynamicMenu(topNavData[0].routers, _data.permission_data.default_page)
       // 返回的是一级路由，设置到router中
       resolve(topNavData[0].menus)
     })
@@ -108,7 +106,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
