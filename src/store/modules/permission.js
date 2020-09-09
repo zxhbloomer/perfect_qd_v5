@@ -1,4 +1,4 @@
-import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDefaultPageStatic, deepRecursiveLoadComponent } from '@/router'
+import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDefaultPageStatic, setAccessRouters, deepRecursiveLoadComponent } from '@/router'
 import deepcopy from 'deep-copy'
 
 /**
@@ -97,6 +97,7 @@ const actions = {
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', topNavData)
       commit('SET_ROUTES', topNavData[0].routers)
+      setAccessRouters(topNavData[0].routers)
       // 返回的是一级路由，设置到router中
       resolve(topNavData[0].menus)
     })

@@ -74,6 +74,58 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
+  },
+  {
+    children: [
+      {
+        component: () => import('@/views/01_dashboard/index'),
+        default_open: true,
+        full_path: '/dashboard',
+        id: 91,
+        is_enable: true,
+        leaf: true,
+        level: 3,
+        menu_id: 91,
+        meta: {
+          affix: true,
+          breadcrumb: false,
+          icon: 'dashboard',
+          name: '首页',
+          noCache: false,
+          title: '首页'
+        },
+        page_code: 'P00000070',
+        page_id: 15,
+        parent_id: 90,
+        path: '/dashboard',
+        root_id: 89,
+        route_name: 'P0039',
+        sort: 0,
+        type: 'P'
+      }
+    ],
+    full_path: '/',
+    id: 90,
+    is_enable: true,
+    leaf: false,
+    level: 2,
+    menu_id: 90,
+    meta: {
+      affix: false,
+      breadcrumb: false,
+      icon: '工作台',
+      name: '工作台',
+      noCache: false,
+      title: '工作台'
+    },
+    parent_id: 89,
+    path: '/',
+    redirect: '/dashboard',
+    root_id: 89,
+    route_name: '',
+    sort: 0,
+    type: 'T',
+    component: Layout
   }
   // {
   //   path: '/',
@@ -436,6 +488,11 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+export function setAccessRouters(_routers) {
+  // constantRoutes.push(_routers)
+  // debugger
+}
+
 export function setDefaultPageStatic(page) {
   const default_page = {
     path: '/',
@@ -541,25 +598,6 @@ export const loadView = (view) => { // 路由懒加载
   }
   // return (resolve) => require([view], resolve)
 }
-
-// // 按全路径的方式来设置，并返回
-// export function convertFullPathMenuRouter(orignal, _path) {
-//   const _childrens = []
-//   let path = _path === undefined ? '' : _path + '/'
-//   for (const item of orignal) {
-//     path = path + item.path
-//     if (item.children) {
-//       // convertToOneRouter(item.children, path)
-//       findChilds(item.children, path, _childrens)
-//     } else {
-//       item.path = path
-//       _childrens.push(item)
-//     }
-//   }
-//   // orignal为全路径的菜单路由
-//   // store.dispatch('menuRouter/setMenuRouter', orignal)
-//   return orignal
-// }
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
