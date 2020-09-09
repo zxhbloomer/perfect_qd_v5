@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      debugger
       if (this.permission_topNav[key - 1].index === this.activeIndex) {
         return
       }
