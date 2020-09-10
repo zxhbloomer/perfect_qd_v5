@@ -93,7 +93,6 @@ export default {
   },
   created() {
     this.routers_data = deepCopy(this.permission_routes)
-    console.log(this.routers_data)
   }
 }
 </script>

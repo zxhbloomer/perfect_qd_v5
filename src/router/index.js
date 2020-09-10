@@ -74,59 +74,59 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
-  {
-    children: [
-      {
-        component: () => import('@/views/01_dashboard/index'),
-        default_open: true,
-        full_path: '/dashboard',
-        id: 91,
-        is_enable: true,
-        leaf: true,
-        level: 3,
-        menu_id: 91,
-        meta: {
-          affix: true,
-          breadcrumb: false,
-          icon: 'dashboard',
-          name: '首页',
-          noCache: false,
-          title: '首页'
-        },
-        page_code: 'P00000070',
-        page_id: 15,
-        parent_id: 90,
-        path: '/dashboard',
-        root_id: 89,
-        route_name: 'P0039',
-        sort: 0,
-        type: 'P'
-      }
-    ],
-    full_path: '/',
-    id: 90,
-    is_enable: true,
-    leaf: false,
-    level: 2,
-    menu_id: 90,
-    meta: {
-      affix: false,
-      breadcrumb: false,
-      icon: '工作台',
-      name: '工作台',
-      noCache: false,
-      title: '工作台'
-    },
-    parent_id: 89,
-    path: '/',
-    redirect: '/dashboard',
-    root_id: 89,
-    route_name: '',
-    sort: 0,
-    type: 'T',
-    component: Layout
   }
+  // {
+  //   children: [
+  //     {
+  //       component: () => import('@/views/01_dashboard/index'),
+  //       default_open: true,
+  //       full_path: '/dashboard',
+  //       id: 91,
+  //       is_enable: true,
+  //       leaf: true,
+  //       level: 3,
+  //       menu_id: 91,
+  //       meta: {
+  //         affix: true,
+  //         breadcrumb: false,
+  //         icon: 'dashboard',
+  //         name: '首页',
+  //         noCache: false,
+  //         title: '首页'
+  //       },
+  //       page_code: 'P00000070',
+  //       page_id: 15,
+  //       parent_id: 90,
+  //       path: '/dashboard',
+  //       root_id: 89,
+  //       route_name: 'P0039',
+  //       sort: 0,
+  //       type: 'P'
+  //     }
+  //   ],
+  //   full_path: '/',
+  //   id: 90,
+  //   is_enable: true,
+  //   leaf: false,
+  //   level: 2,
+  //   menu_id: 90,
+  //   meta: {
+  //     affix: false,
+  //     breadcrumb: false,
+  //     icon: '工作台',
+  //     name: '工作台',
+  //     noCache: false,
+  //     title: '工作台'
+  //   },
+  //   parent_id: 89,
+  //   path: '/',
+  //   redirect: '/dashboard',
+  //   root_id: 89,
+  //   route_name: '',
+  //   sort: 0,
+  //   type: 'T',
+  //   component: Layout
+  // }
   // {
   //   path: '/',
   //   component: Layout,
@@ -480,17 +480,18 @@ function clearAsyncRoutesConvertToOneRouter() {
   ]
 }
 
+let customerRouter = []
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: customerRouter === undefined ? constantRoutes : constantRoutes.concat(customerRouter)
 })
 
 const router = createRouter()
 
 export function setAccessRouters(_routers) {
-  // constantRoutes.push(_routers)
-  // debugger
+  customerRouter = _routers
+  resetRouter()
 }
 
 export function setDefaultPageStatic(page) {
