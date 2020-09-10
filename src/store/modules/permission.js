@@ -58,6 +58,7 @@ const mutations = {
 const actions = {
   setRoutes({ commit }, routers) {
     debugger
+    setAccessRouters(routers)
     // 设置到vuex中是菜单树
     commit('SET_ROUTES', routers)
   },
@@ -66,7 +67,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -110,7 +111,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
