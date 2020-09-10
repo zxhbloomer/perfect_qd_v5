@@ -57,6 +57,7 @@ const mutations = {
 
 const actions = {
   setRoutes({ commit }, routers) {
+    debugger
     // 设置到vuex中是菜单树
     commit('SET_ROUTES', routers)
   },
@@ -71,6 +72,7 @@ const actions = {
       const topNavData = []
       // 此处修改，动态显示顶部导航栏
       const _topNav = _data.permission_data.user_permission_menu
+      let i = 0
       // 循环格式化菜单
       for (const item of _topNav[0].children) {
         // 递归循环，读取component
@@ -81,15 +83,16 @@ const actions = {
          * P: page
          */
         if (item.type === 'T') {
+          i++
           const tmpTopNav = {
-            index: item.id + '',
+            index: i + '',
             type: item.type,
             meta: item.meta,
             menus: null,
-            routers: item
+            routers: [item]
           }
           var _routers = deepcopy(tmpTopNav.routers)
-          const convertData = convertToOneRouter(_routers.children)
+          const convertData = convertToOneRouter(_routers)
           tmpTopNav.menus = convertData
           topNavData.push(tmpTopNav)
         }
