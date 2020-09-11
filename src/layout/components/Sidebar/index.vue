@@ -82,7 +82,6 @@ export default {
   watch: {
     'permission_routes': {
       handler(newVal, oldVal) {
-        debugger
         this.visible = false
         setTimeout(() => {
           this.routers_data = deepCopy(this.permission_routes)
@@ -92,7 +91,6 @@ export default {
     }
   },
   created() {
-    debugger
     this.routers_data = deepCopy(this.permission_routes)
   }
 }

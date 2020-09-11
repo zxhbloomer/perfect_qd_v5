@@ -11,9 +11,10 @@
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
+      111aaa{{ item.children }}111aaa
       <sidebar-item
         v-for="child in item.children"
-        :key="child.path"
+        :key="child.id"
         :is-nest="true"
         :item="child"
         :base-path="resolvePath(child.path)"

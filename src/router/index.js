@@ -145,7 +145,7 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
-    path: '/sys',
+    path: '',
     component: Layout,
     redirect: 'noRedirect',
     name: 'M00000010', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -156,28 +156,28 @@ export const asyncRoutes = [
       noCache: true
     },
     children: [
-      { path: 'role',
+      { path: '/sys/role',
         component: () => import('@/views/10_system/role/role'),
         name: 'P00000000',
         meta: { title: '角色管理', icon: '角色' }
       },
-      { path: 'resource',
+      { path: '/sys/resource',
         component: () => import('@/views/10_system/resource/resource'),
         name: 'P00000020',
         meta: { title: '资源管理', icon: '资源管理' }
       },
-      { path: 'syscode',
+      { path: '/sys/syscode',
         component: () => import('@/views/00_platform/syscode/syscode'),
         name: 'P00000180',
         meta: { title: '系统编码', icon: 'syscode' }
       },
-      { path: 'icons',
+      { path: '/sys/icons',
         component: () => import('@/views/10_system/icons/icon'),
         name: 'P00000230',
         meta: { title: '系统icon', icon: 'icons' }
       },
       {
-        path: 'dic',
+        path: '',
         // component: subMenu,
         redirect: 'noRedirect',
         // name: 'M00000020', // 设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -188,12 +188,12 @@ export const asyncRoutes = [
           noCache: true
         },
         children: [
-          { path: 'dicttype',
+          { path: '/dic/dicttype',
             component: () => import('@/views/10_system/dicttype/dicttype'),
             name: 'P00000030',
             meta: { title: '字典类型' }
           },
-          { path: 'dictdata',
+          { path: '/dic/dictdata',
             component: () => import('@/views/10_system/dictdata/dictdata'),
             name: 'P00000050',
             meta: { title: '字典数据' }
@@ -575,6 +575,7 @@ function findChilds(children, _path, _parent, _childrens) {
       // 删除对象中的children属性
       delete _childItem.children
       path = _path === undefined ? '' : _path + '/'
+      path = path.replace('//', '/')
       _childItem.path = path.endsWith('/') ? (path + _childItem.path) : (path + '/' + _childItem.path)
       if (_childItem.meta.fulltitle === undefined) {
         _childItem.meta.fulltitle = []
@@ -585,6 +586,7 @@ function findChilds(children, _path, _parent, _childrens) {
       if (typeof _childItem.component === 'string') {
         _childItem.component = loadView(_childItem.component)
       }
+      _childItem.path = _childItem.path.replace('//', '/')
       _childrens[0].children.push(_childItem)
     }
   }

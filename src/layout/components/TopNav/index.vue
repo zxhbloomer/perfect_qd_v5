@@ -57,7 +57,6 @@ export default {
   watch: {
   },
   created() {
-    debugger
     this.activeIndex = this.permission_topNav[0].index
   },
   methods: {

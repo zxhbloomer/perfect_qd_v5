@@ -67,7 +67,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -92,6 +92,7 @@ const actions = {
             menus: null,
             routers: [item]
           }
+          debugger
           var _routers = deepcopy(tmpTopNav.routers)
           const convertData = convertToOneRouter(_routers)
           tmpTopNav.menus = convertData
@@ -111,7 +112,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
