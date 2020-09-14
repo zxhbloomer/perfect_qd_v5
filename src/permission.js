@@ -24,6 +24,7 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
+      debugger
       next({ path: '/' })
       NProgress.done()
     } else {
@@ -35,6 +36,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          debugger
 
           // 调用后台获取用户数据
           // 角色
