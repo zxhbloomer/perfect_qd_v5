@@ -10,6 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/auth-redirect', '/signup', '/assets/', '/api/v1/sms/code'] // no redirect whitelist
 
+// 路由守卫
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
@@ -34,6 +35,8 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+
+          // 调用后台获取用户数据
           // 角色
           const { roles, permission_data } = await store.dispatch('user/getUserInfoAction')
 
@@ -41,6 +44,7 @@ router.beforeEach(async(to, from, next) => {
           // 获取路由处理
           // const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           const accessRoutes = await store.dispatch('permission/getTopNavAndRoutes', { roles: roles, permission_data: permission_data })
+          debugger
           // 动态添加路由
           router.addRoutes(accessRoutes)
 

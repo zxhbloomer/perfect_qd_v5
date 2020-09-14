@@ -489,6 +489,16 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+export function setRedirectRouter(redirect_path, children) {
+  const redirect_router = {
+    path: '/',
+    component: Layout,
+    redirect: `${redirect_path}`,
+    children: [...children]
+  }
+  constantRoutes.push(redirect_router)
+}
+
 export function setAccessRouters(_routers) {
   customerRouter = _routers
   resetRouter()

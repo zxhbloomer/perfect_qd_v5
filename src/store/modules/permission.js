@@ -1,4 +1,4 @@
-import { asyncRoutes, asyncRoutes2, convertToOneRouter, constantRoutes, setDefaultPageStatic, setAccessRouters, deepRecursiveLoadComponent } from '@/router'
+import { asyncRoutes, asyncRoutes2, resetRouter, setRedirectRouter, convertToOneRouter, constantRoutes, setDefaultPageStatic, setAccessRouters, deepRecursiveLoadComponent } from '@/router'
 import deepcopy from 'deep-copy'
 
 /**
@@ -67,7 +67,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -90,19 +90,20 @@ const actions = {
             type: item.type,
             meta: item.meta,
             menus: null,
-            routers: [item]
+            routers: [...item.children]
           }
-          debugger
           var _routers = deepcopy(tmpTopNav.routers)
-          const convertData = convertToOneRouter(_routers)
-          tmpTopNav.menus = convertData
+          // const convertData = convertToOneRouter(_routers)
+          tmpTopNav.menus = _routers
           topNavData.push(tmpTopNav)
         }
       }
       // 设置到vuex中是菜单树
       commit('SET_TOP_NAV', topNavData)
       commit('SET_ROUTES', topNavData[0].routers)
-      setAccessRouters(topNavData[0].routers)
+      setRedirectRouter('/dashboard', topNavData[0].routers)
+      resetRouter()
+      debugger
       // 返回的是一级路由，设置到router中
       resolve(topNavData[0].menus)
     })
@@ -112,7 +113,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
