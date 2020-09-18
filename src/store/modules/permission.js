@@ -57,7 +57,6 @@ const mutations = {
 
 const actions = {
   setRoutes({ commit }, routers) {
-    debugger
     setAccessRouters(routers)
     // 设置到vuex中是菜单树
     commit('SET_ROUTES', routers)
@@ -67,7 +66,7 @@ const actions = {
    * @param {*} param0
    * @param {*} roles
    */
-  getTopNavAndRoutes({ commit }, _data) {
+  getTopNavAndRoutes2({ commit }, _data) {
     return new Promise(resolve => {
       // 定义菜单数组
       const topNavData = []
@@ -103,7 +102,6 @@ const actions = {
       commit('SET_ROUTES', topNavData[0].routers)
       setRedirectRouter('/01/dashboard', topNavData[0].routers)
       resetRouter()
-      debugger
       // 返回的是一级路由，设置到router中
       resolve(topNavData[0].menus)
     })
@@ -113,7 +111,7 @@ const actions = {
    * @param {*} param0
    * @param {*} _data
    */
-  getTopNavAndRoutes2({ commit }, _data) {
+  getTopNavAndRoutes({ commit }, _data) {
     return new Promise(resolve => {
       // TODO 此处修改，调试顶部导航栏
       const _topNav = [
